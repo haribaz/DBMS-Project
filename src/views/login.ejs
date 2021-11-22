@@ -1,0 +1,53 @@
+<main class="form-signin">
+	<form action="/login" method="POST">
+		<h1 class="mb-4">Movie Logger</h1>
+		<div class="form-floating">
+			<input
+				type="email"
+				class="form-control"
+				id="floatingInput"
+				placeholder="name@example.com"
+				name="email"
+			/>
+			<label for="floatingInput">Email address</label>
+		</div>
+		<div class="form-floating">
+			<input
+				type="password"
+				class="form-control"
+				id="floatingPasswordLogin"
+				placeholder="Password"
+				name="password"
+			/>
+			<label for="floatingPasswordLogin">Password</label>
+		</div>
+		<div class="btn-group mb-4">
+			<input
+				type="radio"
+				class="btn-check"
+				name="isAdm"
+				id="admin"
+				value="true"
+				checked
+			/>
+			<label class="btn btn-outline-primary" for="admin">Admin</label>
+
+			<input
+				type="radio"
+				class="btn-check"
+				name="isAdm"
+				id="user"
+				value="false"
+			/>
+			<label class="btn btn-outline-primary" for="user">User</label>
+		</div>
+
+		<button class="w-100 btn btn-lg btn-primary" type="submit">
+			Sign in
+		</button>
+		<div>
+			<a href="/register">New User? Register Here</a>
+		</div>
+		<p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+	</form>
+</main>

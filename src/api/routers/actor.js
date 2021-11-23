@@ -31,7 +31,7 @@ ActorRouter.post(
 				name: name,
 				age: age,
 				bio: bio,
-				cover_image: req.files.coverImg[0].filename,
+				coverImage: req.files.coverImg[0].filename,
 			});
 
 			if (newActor) {

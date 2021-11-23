@@ -30,7 +30,7 @@ DirectorRouter.post(
 			const newDirector = await DirectorModel.create({
 				name: name,
 				bio: bio,
-				cover_image: req.files.coverImg[0].filename,
+				coverImage: req.files.coverImg[0].filename,
 			});
 
 			if (newDirector) {

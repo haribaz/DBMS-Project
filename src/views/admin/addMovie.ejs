@@ -1,12 +1,10 @@
 <div class="form-container">
     <h2> Add a New Movie</h2>
-    <form class="mt-5">
+    <form method="post" enctype="multipart/form-data" class="mt-5">
         <div class="row">
             <div class="form-item-movie col">
-                <form method="POST">
                     <label>Title</label>
-                    <input class="form-control form-input-movie" type="text" name="title" placeholder="Title" required name="title">
-                </form>
+                    <input class="form-control form-input-movie" type="text" name="title" placeholder="Title">
             </div>
             <div class="col form-item-movie">
                 <label>Director</label>
@@ -53,8 +51,5 @@
         <div class="d-flex flex-row-reverse">
             <button type="submit" class="form-item-movie btn btn-primary">Submit</button>
         </div>
-
-    
     </form>
-
 </div>

@@ -5,10 +5,15 @@ const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 const app = express();
 const path = require('path');
+const fs = require('fs');
 
 console.log(process.env.MONGODB_URL);
 console.log(process.env.PORT);
 require('./src/database/setup.js');
+
+if (!fs.existsSync('./images')) {
+	fs.mkdirSync('./images');
+}
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/src/views'));
@@ -41,26 +46,26 @@ app.get('/user/reviews', (req, res) => {
 
 app.get('/admin/movies', (req, res) => {
 	res.render('admin/movie', { layout: 'layouts/admin' });
-})
+});
 
 app.get('/admin/actors', (req, res) => {
 	res.render('admin/actor', { layout: 'layouts/admin' });
-})
+});
 
 app.get('/admin/directors', (req, res) => {
 	res.render('admin/director', { layout: 'layouts/admin' });
-})
+});
 
 app.get('/admin/addMovie', (req, res) => {
 	res.render('admin/addMovie', { layout: 'layouts/admin' });
-})
+});
 
 app.get('/admin/addActor', (req, res) => {
 	res.render('admin/addActor', { layout: 'layouts/admin' });
-})
+});
 
 app.get('/admin/addDirector', (req, res) => {
 	res.render('admin/addDirector', { layout: 'layouts/admin' });
-})
+});
 
 app.listen(process.env.PORT || 3000);

@@ -1,3 +1,8 @@
+<form method="GET" class="d-flex">
+	<input class="form-control" type="text" style="margin-right: 1rem; background-color: var(--color-text-light);" name="title">
+	<button class="btn btn-primary" type="submit">Search</button>
+</form>
+
 <div class="grid-container">
 	<% for(let i=0; i<10; i++) { %>
 	<div class="movie-card card">
@@ -31,3 +36,5 @@
 	</div>
 	<% } %>
 </div>
+
+<a class="fixed-button btn" href="/admin/addMovie"><i class="plus-sign fas fa-plus"></i></a>

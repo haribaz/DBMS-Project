@@ -5,7 +5,15 @@ const actorSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	age: {
+		type: Number,
+		required: true
+	},
 	bio: {
+		type: String,
+		required: true,
+	},
+	coverImage: {
 		type: String,
 		required: true,
 	},

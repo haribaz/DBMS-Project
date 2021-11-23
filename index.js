@@ -27,16 +27,40 @@ app.get('/register', (req, res) => {
 	res.render('register', { layout: 'layouts/login' });
 });
 
-app.get('/home', (req, res) => {
-	res.render('users/home', { layout: 'layouts/basicHome' });
+app.get('/user/home', (req, res) => {
+	res.render('users/home', { layout: 'layouts/userHome' });
 });
 
-app.get('/following', (req, res) => {
-	res.render('users/following', { layout: 'layouts/basic' });
+app.get('/user/following', (req, res) => {
+	res.render('users/following', { layout: 'layouts/user' });
 });
 
-app.get('/reviews', (req, res) => {
-	res.render('users/reviews', { layout: 'layouts/basic' });
+app.get('/user/reviews', (req, res) => {
+	res.render('users/reviews', { layout: 'layouts/user' });
 });
+
+app.get('/admin/movies', (req, res) => {
+	res.render('admin/movie', { layout: 'layouts/admin' });
+})
+
+app.get('/admin/actors', (req, res) => {
+	res.render('admin/actor', { layout: 'layouts/admin' });
+})
+
+app.get('/admin/directors', (req, res) => {
+	res.render('admin/director', { layout: 'layouts/admin' });
+})
+
+app.get('/admin/addMovie', (req, res) => {
+	res.render('admin/addMovie', { layout: 'layouts/admin' });
+})
+
+app.get('/admin/addActor', (req, res) => {
+	res.render('admin/addActor', { layout: 'layouts/admin' });
+})
+
+app.get('/admin/addDirector', (req, res) => {
+	res.render('admin/addDirector', { layout: 'layouts/admin' });
+})
 
 app.listen(process.env.PORT || 3000);

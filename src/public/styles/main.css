@@ -1,6 +1,9 @@
 @import './shared/vars.css';
 @import './shared/fonts.css';
 @import './shared/header.css';
+@import './shared/homeUser.css';
+@import './shared/adminMovie.css';
+@import './shared/formAdd.css';
 
 *,
 *::before,

@@ -39,6 +39,7 @@
 }
 
 #expanded-form {
+	z-index: 2;
 	position: absolute;
 	width: 310px;
 	margin: -40px 20.5%;

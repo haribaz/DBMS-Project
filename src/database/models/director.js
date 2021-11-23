@@ -9,6 +9,10 @@ const directorSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	coverImage: {
+		type: String,
+		required: true,
+	},
 	movies: [
 		{
 			movie: {

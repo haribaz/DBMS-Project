@@ -1,0 +1,60 @@
+<div class="form-container">
+    <h2> Add a New Movie</h2>
+    <form class="mt-5">
+        <div class="row">
+            <div class="form-item-movie col">
+                <form method="POST">
+                    <label>Title</label>
+                    <input class="form-control form-input-movie" type="text" name="title" placeholder="Title" required name="title">
+                </form>
+            </div>
+            <div class="col form-item-movie">
+                <label>Director</label>
+                <select  class="form-select form-input-movie" name="director">
+                    <option value="1" selected>One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Date</label>
+                <input  class="form-select form-input-movie" name="releaseDate" type="date">
+            </div>
+            <div class="col form-item-movie">
+                <label>Cast</label>
+                <select  class="form-control form-input-movie mselect" name="cast" multiple>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    <option value="4">Four</option>
+                    <option value="5">Five</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label class="form-label">Description</label>
+                <textarea class="form-control form-input-movie" name="description" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Cover Image</label>
+                <input type="file" class="form-control form-input-movie" name="coverImage">
+            </div>
+            <div class="col form-item-movie">
+                <label>Runtime</label>
+                <input type="number" class="form-control form-input-movie" name="runtime">
+            </div>
+        </div>
+        
+        <div class="d-flex flex-row-reverse">
+            <button type="submit" class="form-item-movie btn btn-primary">Submit</button>
+        </div>
+
+    
+    </form>
+
+</div>

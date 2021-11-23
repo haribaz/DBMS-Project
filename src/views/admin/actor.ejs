@@ -1,3 +1,8 @@
+<form method="GET" class="d-flex">
+	<input class="form-control" type="text" style="margin-right: 1rem; background-color: var(--color-text-light);" name="title">
+	<button class="btn btn-primary" type="submit">Search</button>
+</form>
+
 <div class="grid-container">
 	<% for(let i=0; i<10; i++) { %>
 	<div class="movie-card card">
@@ -17,17 +22,19 @@
 					See More
 				</button>
 				<a href="#" class="movie-see-more btn btn-primary"
-					>Movie Page</a
+					>Actor Page</a
 				>
 			</div>
 			<div class="collapse text-primary mt-3" id="collapse<%= i %>">
 				<div class="card-body">
-					Actor: Vijay
+					Name: Vijay
 					<br />
-					Director: Atle
+					Age: 42
 				</div>
 			</div>
 		</div>
 	</div>
 	<% } %>
 </div>
+
+<a class="fixed-button btn" href="/admin/addActor"><i class="plus-sign fas fa-plus"></i></a>

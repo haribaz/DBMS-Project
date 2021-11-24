@@ -4,6 +4,7 @@
 @import './shared/homeUser.css';
 @import './shared/adminMovie.css';
 @import './shared/formAdd.css';
+@import './shared/showMovie.css';
 
 *,
 *::before,

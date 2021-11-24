@@ -68,4 +68,8 @@ app.get('/admin/addDirector', (req, res) => {
 	res.render('admin/addDirector', { layout: 'layouts/admin' });
 });
 
+app.get('/admin/showMovie', (req, res) => {
+	res.render('admin/showMovie', { layout: 'layouts/admin' });
+});
+
 app.listen(process.env.PORT || 3000);

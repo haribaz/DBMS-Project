@@ -1,10 +1,10 @@
-const DirectorRouter = require('express').Router();
+const ActorRouter = require('express').Router();
 
-const DirectorModel = require('../../database/models/director');
-const { uploadImg } = require('../../middleware/multer');
+const ActorModel = require('../../../database/models/actor');
+const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
 
-DirectorRouter.post(
+ActorRouter.post(
 	'/add',
 	uploadImg.fields([
 		{
@@ -14,26 +14,27 @@ DirectorRouter.post(
 	]),
 	async (req, res) => {
 		try {
-			const { name, bio } = req.body;
+			const { name, bio, age } = req.body;
 
-			if (!name || !bio || !req.files.coverImg) {
+			if (!name || !bio || !age || !req.files.coverImg) {
 				return res.status(400).json({
 					message: 'Fill all the fields',
 				});
 			}
 
-			if (await DirectorModel.findOne({ name: name }))
+			if (await ActorModel.findOne({ name: name }))
 				return res.status(400).json({
-					message: 'Director already exists',
+					message: 'Actor already exists',
 				});
 
-			const newDirector = await DirectorModel.create({
+			const newActor = await ActorModel.create({
 				name: name,
+				age: age,
 				bio: bio,
 				coverImage: req.files.coverImg[0].filename,
 			});
 
-			if (newDirector) {
+			if (newActor) {
 				return res.status(200).json({
 					message: 'Success',
 				});
@@ -47,23 +48,24 @@ DirectorRouter.post(
 	}
 );
 
-DirectorRouter.get('/:name', async (req, res) => {
+ActorRouter.get('/:name', async (req, res) => {
 	try {
 		const name = req.params.name;
 
-		const director = await DirectorModel.findOne({ name: name });
+		const actor = await ActorModel.findOne({ name: name });
 
-		if (!director) {
+		if (!actor) {
 			res.status(404).json({
-				message: 'Director not found',
+				message: 'Actor not found',
 			});
 		}
 
 		const data = {
-			name: director.name,
-			bio: director.bio,
-			coverImage: director.coverImage,
-			movies: director.movies,
+			name: actor.name,
+			bio: actor.bio,
+			age: actor.age,
+			coverImage: actor.coverImage,
+			movies: actor.movies,
 		};
 		res.status(200).json({
 			details: data,
@@ -76,4 +78,4 @@ DirectorRouter.get('/:name', async (req, res) => {
 	}
 });
 
-module.exports = DirectorRouter;
+module.exports = ActorRouter;

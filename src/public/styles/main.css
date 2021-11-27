@@ -1,10 +1,10 @@
 @import './shared/vars.css';
 @import './shared/fonts.css';
 @import './shared/header.css';
-@import './shared/homeUser.css';
-@import './shared/adminMovie.css';
+@import './shared/movieGrid.css';
+@import './shared/adminAddButton.css';
 @import './shared/formAdd.css';
-@import './shared/showMovie.css';
+@import './shared/adminShowMovie.css';
 
 *,
 *::before,

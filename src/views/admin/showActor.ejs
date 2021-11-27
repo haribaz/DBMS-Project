@@ -1,0 +1,42 @@
+<div class="mt-5 d-flex justify-content-evenly">
+    <div>
+       <img class="movie-cover" src="https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_FMjpg_UX1000_.jpg">
+       <div class="mt-3 btn-row-movie d-flex">
+          <a class="btn-movie btn btn-danger">
+             Delete
+          </a>
+          <a class="btn-movie btn btn-primary">
+             Edit
+          </a>
+       </div>
+    </div>
+    <div class="movie-details-grid align-self-center">
+       <table class="movie-details-table">
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Name</div></td>
+             <td  class="table-cell"><div>Dark Knight</div></td>
+          </tr>
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Age</div></td>
+             <td class="table-cell"><div>41</div></td>
+ 
+          </tr>
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Bio</div></td>
+             <td class="table-cell"><div>Great Boy Good Actor</div></td>
+ 
+          </tr>
+       </table>
+    </div>
+ </div>
+
+ <hr class="mt-5 mb-5">
+
+ <div>
+    <h2>Movies by Actor</h2>
+    <div class="grid-container-small">
+       <% for(let i=0; i<5; i++) { %>
+         <a href="#"><img class="director-movie movie-cover-small" src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg"></a>
+       <% } %>
+    </div>
+ </div>

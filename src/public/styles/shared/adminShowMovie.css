@@ -1,8 +1,17 @@
 :root {
 	--movie-cover-width: 200px;
+	--movie-cover-width-small-alt: 150px;
 	--movie-cover-width-small: 175px;
 	--movie-cover-width-large: 250px;
 	--movie-cover-aspect-ratio: 0.75;
+}
+
+.movie-cover-small-alt {
+	width: var(--movie-cover-width-small-alt);
+	height: calc(
+		var(--movie-cover-width-small-alt) / var(--movie-cover-aspect-ratio)
+	);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .movie-cover-small {

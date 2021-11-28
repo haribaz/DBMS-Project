@@ -1,7 +1,10 @@
+<h1 style="text-align: center;">Actors</h1>
+<br>
 <form method="GET" class="d-flex">
 	<input class="form-control" type="text" style="margin-right: 1rem; background-color: var(--color-text-light);" name="title" placeholder="Search Actor">
 	<button class="btn btn-primary" type="submit">Search</button>
 </form>
+<br>
 
 <div class="grid-container">
 	<% for(let i=0; i<10; i++) { %>
@@ -13,24 +16,15 @@
 		/>
 		<div class="text-center card-body">
 			<h5 class="card-title movie-title">Card title</h5>
-			<div class="movie-btn-grid">
-				<button
-					class="btn btn-primary"
-					data-bs-toggle="collapse"
-					data-bs-target="#collapse<%= i %>"
-				>
-					See More
-				</button>
-				<a href="/admin/showActor" class="btn btn-primary"
+			<div class="follow-grid">
+				<form method="post">
+					<button type="submit" class="follow-button btn btn-primary">
+						Follow
+					</button>
+				</form>
+				<a href="/user/showActor" class="btn btn-primary"
 					>Actor Page</a
 				>
-			</div>
-			<div class="collapse text-primary mt-3" id="collapse<%= i %>">
-				<div class="card-body">
-					Name: Vijay
-					<br />
-					Age: 42
-				</div>
 			</div>
 		</div>
 	</div>

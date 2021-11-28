@@ -5,6 +5,8 @@
 @import './shared/adminAddButton.css';
 @import './shared/formAdd.css';
 @import './shared/adminShowMovie.css';
+@import './shared/userFollow.css';
+@import './shared/genreAccordion.css';
 
 *,
 *::before,

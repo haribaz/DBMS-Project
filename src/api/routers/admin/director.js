@@ -76,4 +76,39 @@ DirectorRouter.get('/:name', async (req, res) => {
 	}
 });
 
+DirectorRouter.delete('/delete/:name', async (req, res) => {
+	try {
+		const dirName = req.params.name;
+		const dirObj = await DirectorModel.findOne({ name: dirName });
+		if (!dirObj) {
+			return res.status(400).json({
+				message: 'Director not found',
+			});
+		} else {
+			if (dirObj.movies.length !== 0) {
+				res.status(400).json({
+					message:
+						'Director part of movies in database. Cannot be deleted',
+				});
+			} else {
+				try {
+					const result = DirectorModel.findByIdAndDelete(dirObj._id);
+					return res.status(200).json({
+						message: 'Director Deleted',
+					});
+				} catch (err) {
+					return res.status(400).json({
+						message: err.message,
+					});
+				}
+			}
+		}
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
 module.exports = DirectorRouter;

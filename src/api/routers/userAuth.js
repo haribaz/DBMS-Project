@@ -1,7 +1,7 @@
 const AuthRouter = require('express').Router();
 const bcrypt = require('bcrypt');
 
-require('dotenv').configure({ path: '../../env/.env' });
+require('dotenv').config({ path: '../../env/.env' });
 const UserModel = require('../../database/models/user');
 const AdminModel = require('../../database/models/admin');
 

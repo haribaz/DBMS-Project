@@ -54,12 +54,12 @@ MovieRouter.post(
 					message: 'Director does not exist',
 				});
 
-			cast.forEach((element) => {
+			for (const element of cast) {
 				if (!(await ActorModel.findOne({ name: element })))
 					return res.status(400).json({
 						message: `The actor ${element} does not exist`,
 					});
-			});
+			}
 
 			const newMovie = await MovieModel.create({
 				title: title,
@@ -75,20 +75,24 @@ MovieRouter.post(
 			if (newMovie) {
 				await DirectorModel.findOneAndUpdate(director, {
 					$addToSet: { movies: newMovie._id },
+					// $addToSet: { movies: { movie: newMovie._id } },
 				});
 
-				cast.forEach((element) => {
-					const actorObj = await ActorModel.findOneAndUpdate(
-						element,
+				for (let element of cast) {
+					console.log(element);
+					let actorObj = await ActorModel.findOneAndUpdate(
+						{ name: element },
 						{
 							$addToSet: { movies: newMovie._id },
+							// $addToSet: { movies: { movie: newMovie._id } },
 						}
 					);
-
+					console.log(actorObj);
 					await MovieModel.findByIdAndUpdate(newMovie._id, {
 						$addToSet: { cast: actorObj._id },
+						// $addToSet: { cast: { actor: actorObj._id } },
 					});
-				});
+				}
 
 				return res.status(200).json({
 					message: 'Success',
@@ -103,38 +107,38 @@ MovieRouter.post(
 	}
 );
 
-// ActorRouter.get('/:title', async (req, res) => {
-// 	try {
-// 		const title = req.params.title;
+MovieRouter.get('/:title', async (req, res) => {
+	try {
+		const title = req.params.title;
 
-// 		const movie = await MovieModel.findOne({ title: title });
+		const movie = await MovieModel.findOne({ title: title });
 
-// 		if (!movie) {
-// 			res.status(404).json({
-// 				message: 'Movie not found',
-// 			});
-// 		}
+		if (!movie) {
+			return res.status(404).json({
+				message: 'Movie not found',
+			});
+		}
 
-// 		const data = {
-// 			title: movie.title,
-// 			description: movie.description,
-// 			releaseDate: movie.releaseDate,
-// 			runtime: movie.runtime,
-// 			createdAt: movie.createdAt,
-// 			director: movie.director,
-// 			cast: movie.cast,
-// 			coverImage: movie.coverImage,
-// 		};
-// 		res.status(200).json({
-// 			details: data,
-// 		});
-// 	} catch (err) {
-// 		console.log(err.message);
-// 		return res.status(500).json({
-// 			message: 'Server Error, Try again later',
-// 		});
-// 	}
-// });
+		const data = {
+			title: movie.title,
+			description: movie.description,
+			releaseDate: movie.releaseDate,
+			runtime: movie.runtime,
+			createdAt: movie.createdAt,
+			director: movie.director,
+			cast: movie.cast,
+			coverImage: movie.coverImage,
+		};
+		return res.status(200).json({
+			details: data,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
 
 MovieRouter.delete('/delete/:name', async (req, res) => {
 	try {
@@ -146,7 +150,7 @@ MovieRouter.delete('/delete/:name', async (req, res) => {
 			});
 		} else {
 			//delete this movie in actors
-			movieObj.cast.forEach((ele) => {
+			for (const ele of movieObj.cast) {
 				try {
 					await ActorModel.findByIdAndUpdate(ele.actor._id, {
 						movies: movies.filter(
@@ -158,7 +162,7 @@ MovieRouter.delete('/delete/:name', async (req, res) => {
 						message: 'Error updating respective actor',
 					});
 				}
-			});
+			}
 
 			//deleting for the director
 			try {

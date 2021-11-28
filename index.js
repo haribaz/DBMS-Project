@@ -3,6 +3,9 @@ require('dotenv').config({ path: './src/env/.env' });
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
+const apiRouter = require('./src/api/api');
+const authRouter = require('./src/api/auth');
+
 const app = express();
 const path = require('path');
 const fs = require('fs');
@@ -25,6 +28,9 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
 
 //login and register
+app.use('/api', apiRouter);
+app.use('/auth', authRouter);
+
 app.get('/login', (req, res) => {
 	res.render('login', { layout: 'layouts/login' });
 });

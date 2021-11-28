@@ -21,7 +21,6 @@ const actorSchema = new mongoose.Schema({
 		{
 			movie: {
 				id: mongoose.Schema.Types.ObjectId,
-				required: true,
 				ref: 'Movie',
 			},
 		},

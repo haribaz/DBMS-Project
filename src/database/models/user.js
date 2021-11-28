@@ -38,11 +38,13 @@ const userSchema = new mongoose.Schema({
 	followingGenres: [
 		{
 			genre: {
-				type: String,
+				type: mongoose.Schema.Types.ObjectId,
 				required: true,
+				ref: 'Genre',
 			},
 		},
 	],
+	reviews: [{}],
 });
 
 const User = mongoose.model('User', userSchema);

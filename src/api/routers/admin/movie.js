@@ -103,31 +103,86 @@ MovieRouter.post(
 	}
 );
 
-ActorRouter.get('/:title', async (req, res) => {
+// ActorRouter.get('/:title', async (req, res) => {
+// 	try {
+// 		const title = req.params.title;
+
+// 		const movie = await MovieModel.findOne({ title: title });
+
+// 		if (!movie) {
+// 			res.status(404).json({
+// 				message: 'Movie not found',
+// 			});
+// 		}
+
+// 		const data = {
+// 			title: movie.title,
+// 			description: movie.description,
+// 			releaseDate: movie.releaseDate,
+// 			runtime: movie.runtime,
+// 			createdAt: movie.createdAt,
+// 			director: movie.director,
+// 			cast: movie.cast,
+// 			coverImage: movie.coverImage,
+// 		};
+// 		res.status(200).json({
+// 			details: data,
+// 		});
+// 	} catch (err) {
+// 		console.log(err.message);
+// 		return res.status(500).json({
+// 			message: 'Server Error, Try again later',
+// 		});
+// 	}
+// });
+
+MovieRouter.delete('/delete/:name', async (req, res) => {
 	try {
-		const title = req.params.title;
-
-		const movie = await MovieModel.findOne({ title: title });
-
-		if (!movie) {
-			res.status(404).json({
+		const movieName = req.params.name;
+		const movieObj = await MovieModel.findOne({ name: movieName });
+		if (!movieObj) {
+			return res.status(400).json({
 				message: 'Movie not found',
 			});
-		}
+		} else {
+			//delete this movie in actors
+			movieObj.cast.forEach((ele) => {
+				try {
+					await ActorModel.findByIdAndUpdate(ele.actor._id, {
+						movies: movies.filter(
+							(e) => e.movie.name !== movieName
+						),
+					});
+				} catch (err) {
+					return res.status(400).json({
+						message: 'Error updating respective actor',
+					});
+				}
+			});
 
-		const data = {
-			title: movie.title,
-			description: movie.description,
-			releaseDate: movie.releaseDate,
-			runtime: movie.runtime,
-			createdAt: movie.createdAt,
-			director: movie.director,
-			cast: movie.cast,
-			coverImage: movie.coverImage,
-		};
-		res.status(200).json({
-			details: data,
-		});
+			//deleting for the director
+			try {
+				await DirectorModel.findByIdAndUpdate(movieObj.director._id, {
+					movies: movies.filter((e) => e.movie.name !== movieName),
+				});
+			} catch (err) {
+				return res.status(400).json({
+					message: 'Error updating respective director',
+				});
+			}
+
+			//delete movie
+			try {
+				const result = MovieModel.findByIdAndDelete(movieObj._id);
+				return res.status(200).json({
+					message: 'Movie Deleted',
+				});
+			} catch (err) {
+				return res.status(400).json({
+					message: err.message,
+				});
+			}
+		}
 	} catch (err) {
 		console.log(err.message);
 		return res.status(500).json({

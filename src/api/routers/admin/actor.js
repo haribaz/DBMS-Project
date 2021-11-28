@@ -82,36 +82,30 @@ ActorRouter.get('/:name', async (req, res) => {
 ActorRouter.delete('/delete/:name', async (req, res) => {
 	try {
 		const actorName = req.params.name;
-		MovieModel.find()
-			.then((result) => {
-				result.forEach((ele) => {
-					ele.cast.forEach((a) => {
-						if ((a.actor.name = actorName)) {
-							return res.status(400).json({
-								message:
-									'Actor is part of movie(s). Cannot delete actor',
-							});
-						}
-					});
-				});
-				//delete here
-				ActorModel.findOneAndDelete({ name: actorName })
-					.then(() => {
-						return res.status(200).json({
-							message: 'Actor successfully deleted',
-						});
-					})
-					.catch((err) => {
-						return res.status(402).json({
-							message: 'Unable to find User',
-						});
-					});
-			})
-			.catch((err) => {
-				return res.status(500).json({
-					message: 'Server under maintenance',
-				});
+		const actorObj = await ActorModel.findOne({ name: actorName });
+		if (!actorObj) {
+			return res.status(400).json({
+				message: 'Actor not found',
 			});
+		} else {
+			if (actorObj.movies.length !== 0) {
+				res.status(400).json({
+					message:
+						'Actor part of movies in database. Cannot be deleted',
+				});
+			} else {
+				try {
+					const result = ActorModel.findByIdAndDelete(actorObj._id);
+					return res.status(200).json({
+						message: 'Actor Deleted',
+					});
+				} catch (err) {
+					return res.status(400).json({
+						message: err.message,
+					});
+				}
+			}
+		}
 	} catch (err) {
 		console.log(err.message);
 		return res.status(500).json({

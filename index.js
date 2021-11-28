@@ -50,8 +50,28 @@ app.get('/user/genres', (req, res) => {
 	res.render('users/genre', { layout: 'layouts/user' });
 });
 
-app.get('/user/following', (req, res) => {
-	res.render('users/following', { layout: 'layouts/user' });
+app.get('/user/following/actors', (req, res) => {
+	res.render('users/followingActors', { layout: 'layouts/user' });
+});
+
+app.get('/user/following/directors', (req, res) => {
+	res.render('users/followingDirectors', { layout: 'layouts/user' });
+});
+
+app.get('/user/following/genres', (req, res) => {
+	res.render('users/followingGenres', { layout: 'layouts/user' });
+});
+
+app.get('/user/showMovie', (req, res) => {
+	res.render('users/showMovie', { layout: 'layouts/user' });
+});
+
+app.get('/user/showActor', (req, res) => {
+	res.render('users/showActor', { layout: 'layouts/user' });
+});
+
+app.get('/user/showDirector', (req, res) => {
+	res.render('users/showDirector', { layout: 'layouts/user' });
 });
 
 app.get('/user/reviews', (req, res) => {

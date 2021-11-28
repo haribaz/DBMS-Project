@@ -54,7 +54,7 @@ DirectorRouter.get('/:name', async (req, res) => {
 		const director = await DirectorModel.findOne({ name: name });
 
 		if (!director) {
-			res.status(404).json({
+			return res.status(404).json({
 				message: 'Director not found',
 			});
 		}
@@ -65,7 +65,7 @@ DirectorRouter.get('/:name', async (req, res) => {
 			coverImage: director.coverImage,
 			movies: director.movies,
 		};
-		res.status(200).json({
+		return res.status(200).json({
 			details: data,
 		});
 	} catch (err) {
@@ -81,12 +81,12 @@ DirectorRouter.delete('/delete/:name', async (req, res) => {
 		const dirName = req.params.name;
 		const dirObj = await DirectorModel.findOne({ name: dirName });
 		if (!dirObj) {
-			return res.status(400).json({
+			return res.status(404).json({
 				message: 'Director not found',
 			});
 		} else {
 			if (dirObj.movies.length !== 0) {
-				res.status(400).json({
+				return res.status(400).json({
 					message:
 						'Director part of movies in database. Cannot be deleted',
 				});

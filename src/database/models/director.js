@@ -15,11 +15,18 @@ const directorSchema = new mongoose.Schema({
 	},
 	movies: [
 		{
+<<<<<<< HEAD
 			movie: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'Movie',
 			},
+=======
+			// movie: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Movie',
+			// },
+>>>>>>> 3bc3b24 (bug fixes and testing)
 		},
 	],
 });

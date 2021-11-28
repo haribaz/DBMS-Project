@@ -45,7 +45,7 @@ SearchRouter.get('/', async (req, res) => {
 		
 
 		if (!filteredMovies) {
-			res.status(200).json({
+			return res.status(200).json({
 				message: 'No movies found',
 			});
 		}
@@ -60,7 +60,7 @@ SearchRouter.get('/', async (req, res) => {
 			cast: filteredMovies.cast,
 			coverImage: filteredMovies.coverImage,
 		};
-		res.status(200).json({
+		return res.status(200).json({
 			details: data,
 		});
 	} catch (err) {

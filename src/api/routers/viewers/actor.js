@@ -9,7 +9,7 @@ ActorRouter.get('/:name', async (req, res) => {
 		const actor = await ActorModel.findOne({ name: name });
 
 		if (!actor) {
-			res.status(404).json({
+			return res.status(404).json({
 				message: 'Actor not found',
 			});
 		}
@@ -21,7 +21,7 @@ ActorRouter.get('/:name', async (req, res) => {
 			coverImage: actor.coverImage,
 			movies: actor.movies,
 		};
-		res.status(200).json({
+		return res.status(200).json({
 			details: data,
 		});
 	} catch (err) {

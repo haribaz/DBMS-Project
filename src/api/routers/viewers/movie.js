@@ -2,14 +2,14 @@ const MovieRouter = require('express').Router();
 
 const MovieModel = require('../../../database/models/movie');
 
-ActorRouter.get('/:title', async (req, res) => {
+MovieRouter.get('/:title', async (req, res) => {
 	try {
 		const title = req.params.title;
 
 		const movie = await MovieModel.findOne({ title: title });
 
 		if (!movie) {
-			res.status(404).json({
+			return res.status(404).json({
 				message: 'Movie not found',
 			});
 		}
@@ -24,7 +24,7 @@ ActorRouter.get('/:title', async (req, res) => {
 			cast: movie.cast,
 			coverImage: movie.coverImage,
 		};
-		res.status(200).json({
+		return res.status(200).json({
 			details: data,
 		});
 	} catch (err) {

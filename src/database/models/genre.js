@@ -11,11 +11,10 @@ const genreSchema = new mongoose.Schema({
 	},
 	movies: [
 		{
-			movie: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Movie',
-			},
+			// movie: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Movie',
+			// },
 		},
 	],
 });

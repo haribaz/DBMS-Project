@@ -28,16 +28,14 @@ const movieSchema = new mongoose.Schema({
 	},
 	director: {
 		type: mongoose.Schema.Types.ObjectId,
-		required: true,
 		ref: 'Director',
 	},
 	cast: [
 		{
-			actor: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Actor',
-			},
+			// actor: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Actor',
+			// },
 		},
 	],
 });

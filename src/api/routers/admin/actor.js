@@ -1,6 +1,7 @@
 const ActorRouter = require('express').Router();
 
 const ActorModel = require('../../../database/models/actor');
+const MovieModel = require('../../../database/models/movie');
 const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
 
@@ -70,6 +71,41 @@ ActorRouter.get('/:name', async (req, res) => {
 		res.status(200).json({
 			details: data,
 		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
+ActorRouter.delete('/delete/:name', async (req, res) => {
+	try {
+		const actorName = req.params.name;
+		const actorObj = await ActorModel.findOne({ name: actorName });
+		if (!actorObj) {
+			return res.status(400).json({
+				message: 'Actor not found',
+			});
+		} else {
+			if (actorObj.movies.length !== 0) {
+				res.status(400).json({
+					message:
+						'Actor part of movies in database. Cannot be deleted',
+				});
+			} else {
+				try {
+					const result = ActorModel.findByIdAndDelete(actorObj._id);
+					return res.status(200).json({
+						message: 'Actor Deleted',
+					});
+				} catch (err) {
+					return res.status(400).json({
+						message: err.message,
+					});
+				}
+			}
+		}
 	} catch (err) {
 		console.log(err.message);
 		return res.status(500).json({

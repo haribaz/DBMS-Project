@@ -22,7 +22,7 @@ MovieRouter.post(
 				description,
 				releaseDate,
 				runtime,
-				createdAt,
+				// createdAt,
 				director,
 				cast,
 			} = req.body;
@@ -32,7 +32,7 @@ MovieRouter.post(
 				!description ||
 				!releaseDate ||
 				!runtime ||
-				!createdAt ||
+				// !createdAt ||
 				!director ||
 				!cast ||
 				!req.files.coverImg
@@ -66,7 +66,7 @@ MovieRouter.post(
 				description: description,
 				releaseDate: releaseDate,
 				runtime: runtime,
-				createdAt: createdAt,
+				// createdAt: createdAt,
 				director: directorObj._id,
 				// cast: cast, //populating cast below
 				coverImage: req.files.coverImg[0].filename,

@@ -39,6 +39,12 @@
                 <input type="file" class="form-control form-input-movie" name="coverImage">
             </div>
             <div class="col form-item-movie">
+                <label>Genre</label>
+                <select  class="form-select form-input-movie" name="genre" disabled>
+                    <option value="<%= details.genre %>" selected><%= details.genre %></option>
+                </select>
+            </div>
+            <div class="col form-item-movie">
                 <label>Runtime</label>
                 <input type="number" class="form-control form-input-movie" value="<%= details.runtime %>" name="runtime">
             </div>

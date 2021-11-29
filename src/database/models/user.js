@@ -44,7 +44,13 @@ const userSchema = new mongoose.Schema({
 			// },
 		},
 	],
-	reviews: [{}],
+	reviews: [
+		{
+			movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' },
+			review: { type: String },
+			rating: { type: Number },
+		},
+	],
 });
 
 const User = mongoose.model('User', userSchema);

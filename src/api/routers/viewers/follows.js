@@ -16,7 +16,7 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 		}
 		const genreName = req.params.genre;
 		const genreObj = await GenreModel.findOne({ name: genreName });
-		const userObj = await UserModel.UserModel.findById(id);
+		const userObj = await UserModel.findById(id);
 
 		if (!genreObj) {
 			return res.status(400).json({
@@ -41,13 +41,7 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 				//add director
 				userObj.followingGenres.push(genreObj);
 			}
-			UserModel.findByIdAndUpdate(userObj._id, userObj)
-				.then((updateResponse) => {
-					console.log('Added successfully', updateResponse);
-				})
-				.catch((e) => {
-					console.log('Error', e);
-				});
+			await userObj.save();
 		}
 	} catch (err) {
 		return res.status(500).json({
@@ -68,7 +62,7 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 		}
 		const actorName = req.params.actorName;
 		const actorObj = await ActorModel.findOne({ name: actorName });
-		const userObj = await UserModel.UserModel.findById(id);
+		const userObj = await UserModel.findById(id);
 
 		if (!actorObj) {
 			return res.status(400).json({
@@ -94,13 +88,7 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 				userObj.followingActors.push(actorObj);
 			}
 
-			UserModel.findByIdAndUpdate(userObj._id, userObj)
-				.then((updateResponse) => {
-					console.log('Added successfully', updateResponse);
-				})
-				.catch((e) => {
-					console.log('Error', e);
-				});
+			await userObj.save();
 		}
 	} catch (err) {
 		return res.status(500).json({
@@ -146,13 +134,7 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 				//add director
 				userObj.followingDirectors.push(dirObj);
 			}
-			UserModel.findByIdAndUpdate(userObj._id, userObj)
-				.then((updateResponse) => {
-					console.log('Added successfully', updateResponse);
-				})
-				.catch((e) => {
-					console.log('Error', e);
-				});
+			await userObj.save();
 		}
 	} catch (err) {
 		return res.status(500).json({

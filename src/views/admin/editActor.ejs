@@ -1,14 +1,14 @@
 <div class="form-container">
     <h2>Edit Actor</h2>
-    <form method="post" enctype="multipart/form-data" class="mt-5">
+    <form method="post" action="/api/admin/actor/edit/<%= details.id %>?_method=PUT" enctype="multipart/form-data" class="mt-5">
         <div class="row">
             <div class="form-item-movie col">
                 <label>Name</label>
-                <input class="form-control form-input-movie" type="text" name="name" placeholder="Name">
+                <input class="form-control form-input-movie" type="text" name="name" value="<%= details.name %>" placeholder="Name">
             </div>
             <div class="form-item-movie col">
                 <label>Age</label>
-                <input class="form-control form-input-movie" type="number" name="age" placeholder="Age">
+                <input class="form-control form-input-movie" type="number" name="age" value="<%= details.age %>" placeholder="Age">
             </div>
             <div class="form-item-movie col">
                 <label>Actor Image</label>
@@ -18,7 +18,7 @@
         <div class="row">
             <div class="form-item-movie col">
                 <label class="form-label">Bio</label>
-                <textarea class="form-control form-input-movie" name="bio" rows="3"></textarea>
+                <textarea class="form-control form-input-movie" name="bio" value="<%= details.bio %>" rows="3"></textarea>
             </div>
         </div>
         <div class="d-flex flex-row-reverse">

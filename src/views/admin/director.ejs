@@ -4,15 +4,15 @@
 </form>
 
 <div class="grid-container">
-	<% for(let i=0; i<10; i++) { %>
+	<% details.forEach((director) => { %>
 	<div class="movie-card card">
 		<img
-			src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg"
+			src="/api/images/<%= director.coverImage %>"
 			class="card-img-top"
 			alt="..."
 		/>
 		<div class="text-center card-body">
-			<h5 class="card-title movie-title">Card title</h5>
+			<h5 class="card-title movie-title"><%= director.name %></h5>
 			<div class="movie-btn-grid">
 				<button
 					class="btn btn-primary"
@@ -21,15 +21,13 @@
 				>
 					See More
 				</button>
-				<a href="/admin/showDirector" class="btn btn-primary"
-					>Director</a
-				>
+				<a href="/api/admin/actor/<%= director.id %>" class="btn btn-primary">Director</a>
 			</div>
 			<div class="collapse text-primary mt-3" id="collapse<%= i %>">
 				<div class="card-body">
-					Name: Atlee
+					Best Movie: <%= director.bestMovie %>
 					<br />
-					Favourite Genre: Drama
+					Favourite Genre: <%= director.favouriteGenre %>
 				</div>
 			</div>
 		</div>
@@ -37,4 +35,4 @@
 	<% } %>
 </div>
 
-<a class="fixed-button btn" href="/admin/addDirector"><i class="plus-sign fas fa-plus"></i></a>
+<a class="fixed-button btn" href="/api/admin/director/add"><i class="plus-sign fas fa-plus"></i></a>

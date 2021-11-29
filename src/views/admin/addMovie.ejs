@@ -41,6 +41,14 @@
                 <input type="file" class="form-control form-input-movie" name="coverImage">
             </div>
             <div class="col form-item-movie">
+                <label>Genre</label>
+                <select  class="form-select form-input-movie" name="genre">
+                    <% details.genres.forEach((genre) => { %>
+                        <option value="<%= genre.name %>"><%= genre.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col form-item-movie">
                 <label>Runtime</label>
                 <input type="number" class="form-control form-input-movie" name="runtime">
             </div>

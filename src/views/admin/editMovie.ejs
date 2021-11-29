@@ -1,40 +1,36 @@
 <div class="form-container">
     <h2> Edit Movie</h2>
-    <form method="post" enctype="multipart/form-data" class="mt-5">
+    <form method="post" action="/api/admin/movie/edit/<%= details.id %>?_method=PUT" enctype="multipart/form-data" class="mt-5">
         <div class="row">
             <div class="form-item-movie col">
                     <label>Title</label>
-                    <input class="form-control form-input-movie" type="text" name="title" placeholder="Title">
+                    <input class="form-control form-input-movie" type="text" name="title" value="<%= details.title %>" placeholder="Title">
             </div>
             <div class="col form-item-movie">
                 <label>Director</label>
-                <select  class="form-select form-input-movie" name="director">
-                    <option value="1" selected>One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select  class="form-select form-input-movie" name="director" disabled>
+                    <option value="<%= details.director.name %>" selected><%= details.director.name %></option>
                 </select>
             </div>
         </div>
         <div class="row">
             <div class="col form-item-movie">
                 <label>Date</label>
-                <input  class="form-select form-input-movie" name="releaseDate" type="date">
+                <input  class="form-select form-input-movie" name="releaseDate" value="<%= details.releaseDate %>" type="date">
             </div>
             <div class="col form-item-movie">
                 <label>Cast</label>
-                <select  class="form-control form-input-movie mselect" name="cast" multiple>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
-                    <option value="5">Five</option>
+                <select  class="form-control form-input-movie mselect" name="cast" multiple disabled>
+                    <% for(let i = 0; i < details.cast.length; i++) { %>
+                        <option value="<%= details.cast[i].name %>" selected><%= details.cast[i].name %></option>
+                    <% } %>
                 </select>
             </div>
         </div>
         <div class="row">
             <div class="col form-item-movie">
                 <label class="form-label">Description</label>
-                <textarea class="form-control form-input-movie" name="description" rows="3"></textarea>
+                <textarea class="form-control form-input-movie" name="description" value="<%= details.description %>" rows="3"></textarea>
             </div>
         </div>
         <div class="row">
@@ -44,7 +40,7 @@
             </div>
             <div class="col form-item-movie">
                 <label>Runtime</label>
-                <input type="number" class="form-control form-input-movie" name="runtime">
+                <input type="number" class="form-control form-input-movie" value="<%= details.runtime %>" name="runtime">
             </div>
         </div>
         

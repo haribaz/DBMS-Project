@@ -9,15 +9,19 @@ const admMovieRouter = require('./routers/admin/movie');
 const userActorRouter = require('./routers/viewers/actor');
 const userDirectorRouter = require('./routers/viewers/director');
 const userMovieRouter = require('./routers/viewers/movie');
-const userSearchRouter = require('./routers/viewers/movie');
+const userSearchRouter = require('./routers/viewers/search');
 const userFollowsRouter = require('./routers/viewers/follows');
 const userGenreRouter = require('./routers/viewers/genre');
 
-// api.use('/', verifyJWT);
+const { verifyUserJWT, verifyAdminJWT } = require('../middleware/jwt');
+
+api.use('/admin', verifyAdminJWT);
 
 api.use('/admin/actor', admActorRouter);
 api.use('/admin/director', admDirectorRouter);
 api.use('/admin/movie', admMovieRouter);
+
+api.use('/user', verifyUserJWT);
 
 api.use('/user/actor', userActorRouter);
 api.use('/user/director', userDirectorRouter);

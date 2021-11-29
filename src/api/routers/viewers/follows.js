@@ -7,8 +7,8 @@ const { verifyUserJWT } = require('../../../middleware/jwt');
 
 followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 	try {
-		const { id } = req.body._id;
-		//const { id } = req.jwt_payload;
+		const id = req.jwt_payload.id;
+		// const { id } = req.body._id;
 		if (!email) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
@@ -58,8 +58,8 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 
 followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 	try {
-		const { id } = req.body._id;
-		//const { id } = req.jwt_payload;
+		const id = req.jwt_payload.id;
+		// const { id } = req.body._id;
 
 		if (!email) {
 			return res.status(400).json({
@@ -111,8 +111,8 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 
 followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 	try {
-		const { id } = req.body._id;
-		//const { id } = req.jwt_payload;
+		const id = req.jwt_payload.id;
+		// const { id } = req.body._id;
 
 		if (!email) {
 			return res.status(400).json({

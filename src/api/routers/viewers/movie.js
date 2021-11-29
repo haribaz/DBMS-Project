@@ -35,4 +35,6 @@ MovieRouter.get('/:title', async (req, res) => {
 	}
 });
 
+// home page all movies - sorted by createdAt, recent first - movies of combined following actors and directors
+
 module.exports = MovieRouter;

@@ -19,29 +19,29 @@ const userSchema = new mongoose.Schema({
 	},
 	followingActors: [
 		{
-			actor: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Actor',
-			},
+			// actor: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Actor',
+			// },
 		},
 	],
 	followingDirectors: [
 		{
-			director: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Director',
-			},
+			// director: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Director',
+			// },
 		},
 	],
 	followingGenres: [
 		{
-			genre: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Genre',
-			},
+			// genre: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Genre',
+			// },
 		},
 	],
 	reviews: [{}],

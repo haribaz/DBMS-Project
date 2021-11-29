@@ -1,14 +1,14 @@
 <h1 style="text-align: center;">Genres</h1>
 
 <div class="mt-5 accordion .accordion-flush" id="accordionExample">
-    <% for(let i=0; i<3; i++){ %>
+    <% details.forEach((genre) => { %>
       <div class="accordion-item">
-        <h2 class="accordion-header" id="heading<%= i %>">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>">
-            Accordion Item <%= i %>
+        <h2 class="accordion-header" id="heading<%= genre.id %>">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= genre.id %>">
+            <%= genre.name %>
           </button>
         </h2>
-        <div id="collapse<%= i %>" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div id="collapse<%= genre.id %>" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
           <div class="accordion-body">
             <form class="d-flex justify-content-center" method="post">
               <button type="submit" class="mt-3 follow-button btn btn-primary">
@@ -16,14 +16,14 @@
               </button>
             </form>
             <div class="grid-container-small">
-              <% for(let i=0; i<5; i++) { %>
-                <a href="#"><img class="director-movie movie-cover-small" src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg"></a>
-              <% } %>
+              <% genre.movies.forEach((movie) => { %>
+                <a href="/api/user/movie/<%= movie.id %>"><img class="director-movie movie-cover-small" src="/api/images/<%= movie.coverImage %>"></a>
+              <% }) %>
             </div>
          </div>
         </div>
       </div>
-    <% } %>
-  </div>
+    <% }) %>
+</div>
 
 

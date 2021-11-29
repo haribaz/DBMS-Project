@@ -1,16 +1,16 @@
-<% for(let i=0; i<4; i++) {%>
+<% details.forEach((review) => {%>
     <div class="card mt-5" style="box-shadow: 0 0 20px black; color: var(--color-background-light)">
         <div class="row g-0">
           <div class="col-md-2">
-            <img src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg" style="height: 170px" class="img-fluid rounded-start" alt="...">
+            <img src="/api/images/<%= review.coverImage %>" style="height: 170px" class="img-fluid rounded-start" alt="...">
           </div>
           <div class="col-md-10">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-muted">Rating: 5</small></p>
+              <h5 class="card-title"><%= review.name %></h5>
+              <p class="card-text"><%= review.review %></p>
+              <p class="card-text"><small class="text-muted"><%= review.rating %></small></p>
             </div>
           </div>
         </div>
     </div>
-<% } %>
+<% }) %>

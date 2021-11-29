@@ -3,6 +3,7 @@ const MovieRouter = require('express').Router();
 const MovieModel = require('../../../database/models/movie');
 const DirectorModel = require('../../../database/models/director');
 const ActorModel = require('../../../database/models/actor');
+const GenreModel = require('../../../database/models/genre');
 
 const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
@@ -107,11 +108,10 @@ MovieRouter.post(
 	}
 );
 
-MovieRouter.get('/:title', async (req, res) => {
+MovieRouter.get('/show/:id', async (req, res) => {
 	try {
-		const title = req.params.title;
-
-		const movie = await MovieModel.findOne({ title: title });
+		const id = req.params.id;
+		const movie = await MovieModel.findById(id);
 
 		if (!movie) {
 			return res.status(404).json({
@@ -217,10 +217,10 @@ MovieRouter.put(
 	}
 );
 
-MovieRouter.delete('/delete/:name', async (req, res) => {
+MovieRouter.delete('/delete/:id', async (req, res) => {
 	try {
-		const movieName = req.params.name;
-		const movieObj = await MovieModel.findOne({ name: movieName });
+		const movieId = req.params.id;
+		const movieObj = await MovieModel.findById(movieId);
 		if (!movieObj) {
 			return res.status(400).json({
 				message: 'Movie not found',
@@ -229,14 +229,13 @@ MovieRouter.delete('/delete/:name', async (req, res) => {
 			//delete this movie in actors
 			for (const ele of movieObj.cast) {
 				try {
-					await ActorModel.findByIdAndUpdate(ele.actor._id, {
-						movies: movies.filter(
-							(e) => e.movie.name !== movieName
-						),
+					await ActorModel.findByIdAndUpdate(ele._id, {
+						$pull: { movies: movieId },
 					});
 				} catch (err) {
 					return res.status(400).json({
-						message: 'Error updating respective actor',
+						message:
+							'Error updating respective actor' + err.message,
 					});
 				}
 			}
@@ -244,7 +243,7 @@ MovieRouter.delete('/delete/:name', async (req, res) => {
 			//deleting for the director
 			try {
 				await DirectorModel.findByIdAndUpdate(movieObj.director._id, {
-					movies: movies.filter((e) => e.movie.name !== movieName),
+					$pull: { movies: movieId },
 				});
 			} catch (err) {
 				return res.status(400).json({
@@ -252,9 +251,22 @@ MovieRouter.delete('/delete/:name', async (req, res) => {
 				});
 			}
 
+			//deleting for the genre
+			// try {
+			// 	await GenreModel.findByIdAndUpdate(movieObj.genre._id, {
+			// 		$pull: { movies: movieId },
+			// 	});
+			// } catch (err) {
+			// 	return res.status(400).json({
+			// 		message: 'Error updating respective genre',
+			// 	});
+			// }
+
 			//delete movie
+
 			try {
-				const result = MovieModel.findByIdAndDelete(movieObj._id);
+				const result = await MovieModel.findByIdAndDelete(movieId);
+				console.log(result);
 				return res.status(200).json({
 					message: 'Movie Deleted',
 				});

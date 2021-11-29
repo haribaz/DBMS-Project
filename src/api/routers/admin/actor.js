@@ -151,6 +151,27 @@ ActorRouter.get('/show/:id', async (req, res) => {
 	}
 });
 
+ActorRouter.get('/all', async (req, res) => {
+	try {
+		const actorObjects = await ActorModel.find();
+
+		if (!actorObjects) {
+			return res.status(403).json({
+				message: 'actor not found',
+			});
+		}
+
+		return res.status(200).json({
+			details: actorObjects,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
 ActorRouter.delete('/delete/:id', async (req, res) => {
 	try {
 		const actorId = req.params.id;

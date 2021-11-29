@@ -284,4 +284,25 @@ MovieRouter.delete('/delete/:id', async (req, res) => {
 	}
 });
 
+MovieRouter.get('/all', async (req, res) => {
+	try {
+		const movieObjects = await MovieModel.find();
+
+		if (!movieObjects) {
+			return res.status(403).json({
+				message: 'Movies not found',
+			});
+		}
+
+		return res.status(200).json({
+			details: movieObjects,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
 module.exports = MovieRouter;

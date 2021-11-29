@@ -148,6 +148,27 @@ DirectorRouter.put(
 	}
 );
 
+DirectorRouter.get('/all', async (req, res) => {
+	try {
+		const directorObjects = await DirectorModel.find();
+
+		if (!directorObjects) {
+			return res.status(403).json({
+				message: 'director not found',
+			});
+		}
+
+		return res.status(200).json({
+			details: directorObjects,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
 DirectorRouter.delete('/delete/:id', async (req, res) => {
 	try {
 		const dirId = req.params.id;

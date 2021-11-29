@@ -10,7 +10,7 @@ const { createUserJWT, createAdminJWT } = require('../../middleware/jwt');
 AuthRouter.post('/login', async (req, res) => {
 	try {
 		const { email, password, isAdm } = req.body;
-
+		console.log(req.body);
 		if (!email || !password || !isAdm) {
 			return res.status(400).json({
 				message: 'Fill all the fields',
@@ -72,7 +72,8 @@ AuthRouter.post('/register', async (req, res) => {
 				message: 'Fill all the fields',
 			});
 		}
-		if (!isAdm) {
+		if (isAdm != 'true') {
+			console.log('user');
 			if (await UserModel.findOne({ email: email }))
 				return res.status(400).json({
 					message: 'Account with this email already exists',
@@ -96,13 +97,13 @@ AuthRouter.post('/register', async (req, res) => {
 				bcrypt.genSaltSync(parseInt(process.env.SALTROUNDS))
 			);
 
-			newUser = await AdminModel.create({
+			newUser = await UserModel.create({
 				name: name,
 				email: email,
 				password: hashed_password,
 			});
 			if (newUser) {
-				const token = await createUserJWT(user);
+				const token = await createUserJWT(newUser);
 				return res.status(200).json({
 					message: 'Success',
 					token,
@@ -139,7 +140,7 @@ AuthRouter.post('/register', async (req, res) => {
 				password: hashed_password,
 			});
 			if (newUser) {
-				const token = await createAdminJWT(user);
+				const token = await createAdminJWT(newUser);
 				return res.status(200).json({
 					message: 'Success',
 					token,

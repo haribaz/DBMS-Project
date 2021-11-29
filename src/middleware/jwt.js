@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: '../env/.env' });
 
@@ -8,13 +8,12 @@ const createUserJWT = async (user) => {
 			{
 				email: user.email,
 				id: user._id,
-				isAdmin: false,
 			},
-			process.env.TOKEN_KEY
+			process.env.TOKEN_KEY,
+			{
+				expiresIn: '168h',
+			}
 		);
-	{
-		expiresIn: '168h';
-	}
 };
 
 const createAdminJWT = async (user) => {
@@ -25,18 +24,18 @@ const createAdminJWT = async (user) => {
 				id: user._id,
 				isAdmin: true,
 			},
-			process.env.TOKEN_KEY
+			process.env.TOKEN_KEY,
+			{
+				expiresIn: '168h',
+			}
 		);
-	{
-		expiresIn: '168h';
-	}
 };
 
 const verifyUserJWT = (req, res, next) => {
 	try {
 		const { token } = req.headers;
 		if (!token) {
-			return res.status(401).json({ message: ' No token' });
+			return res.status(401).json({ message: 'No token' });
 		}
 
 		jwt.verify(token, process.env.TOKEN_KEY, async (err, decoded) => {
@@ -47,6 +46,8 @@ const verifyUserJWT = (req, res, next) => {
 					.status(403)
 					.json({ message: 'Invalid token or Token expired' });
 			}
+
+			console.log(decoded.isAdmin);
 
 			if (isNaN(decoded.email) && decoded.isAdmin)
 				return res.status(400).json({ message: 'Invalid token' });
@@ -64,7 +65,7 @@ const verifyAdminJWT = (req, res, next) => {
 	try {
 		const { token } = req.headers;
 		if (!token) {
-			return res.status(401).json({ message: ' No token' });
+			return res.status(401).json({ message: 'No token' });
 		}
 
 		jwt.verify(token, process.env.TOKEN_KEY, async (err, decoded) => {
@@ -75,6 +76,8 @@ const verifyAdminJWT = (req, res, next) => {
 					.status(403)
 					.json({ message: 'Invalid token or Token expired' });
 			}
+
+			console.log(decoded.isAdmin);
 
 			if (isNaN(decoded.email) && !decoded.isAdmin)
 				return res.status(400).json({ message: 'Invalid token' });

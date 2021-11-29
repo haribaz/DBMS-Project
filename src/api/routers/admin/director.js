@@ -47,7 +47,7 @@ DirectorRouter.post(
 	}
 );
 
-DirectorRouter.get('/id/:id', async (req, res) => {
+DirectorRouter.get('/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 

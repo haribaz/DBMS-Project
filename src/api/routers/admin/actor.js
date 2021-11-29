@@ -49,7 +49,7 @@ ActorRouter.post(
 	}
 );
 
-ActorRouter.get('/id/:id', async (req, res) => {
+ActorRouter.get('/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 

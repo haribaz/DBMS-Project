@@ -108,7 +108,7 @@ MovieRouter.post(
 	}
 );
 
-MovieRouter.get('/id/:id', async (req, res) => {
+MovieRouter.get('/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 		const movie = await MovieModel.findById(id);

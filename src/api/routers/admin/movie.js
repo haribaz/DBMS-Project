@@ -140,6 +140,83 @@ MovieRouter.get('/:title', async (req, res) => {
 	}
 });
 
+MovieRouter.get('/edit/:id', async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const movie = await MovieModel.findById(id);
+
+		if (!movie) {
+			return res.status(404).json({
+				message: 'Movie not found',
+			});
+		}
+
+		const data = {
+			title: movie.title,
+			description: movie.description,
+			releaseDate: movie.releaseDate,
+			runtime: movie.runtime,
+			createdAt: movie.createdAt,
+			director: movie.director,
+			cast: movie.cast,
+			coverImage: movie.coverImage,
+		};
+		return res.status(200).json({
+			details: data,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
+MovieRouter.put(
+	'/edit/:id',
+	uploadImg.fields([
+		{
+			name: 'coverImg',
+			maxCount: 1,
+		},
+	]),
+	async (req, res) => {
+		try {
+			const id = req.params.id;
+			const { title, description, releaseDate, runtime } = req.body;
+
+			const movie = await MovieModel.findById(id);
+
+			if (!movie) {
+				return res.status(404).json({
+					message: 'Movie not found',
+				});
+			}
+
+			movie.title = title ? title : movie.title;
+			movie.description = description ? description : movie.bio;
+			movie.releaseDate = releaseDate ? releaseDate : movie.age;
+			movie.runtime = runtime ? runtime : movie.age;
+
+			movie.coverImage = req.files.coverImg
+				? req.files.coverImg[0].filename
+				: movie.coverImg;
+
+			await movie.save();
+
+			return res.status(200).json({
+				message: 'Movie details updated successfully',
+			});
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({
+				message: 'Server Error, Try again later',
+			});
+		}
+	}
+);
+
 MovieRouter.delete('/delete/:name', async (req, res) => {
 	try {
 		const movieName = req.params.name;

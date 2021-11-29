@@ -49,6 +49,78 @@ ActorRouter.post(
 	}
 );
 
+ActorRouter.get('/edit/:id', async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const actor = await ActorModel.findById(id);
+
+		if (!actor) {
+			return res.status(404).json({
+				message: 'Actor not found',
+			});
+		}
+
+		const data = {
+			name: actor.name,
+			bio: actor.bio,
+			age: actor.age,
+			coverImage: actor.coverImage,
+			movies: actor.movies,
+		};
+		return res.status(200).json({
+			details: data,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
+ActorRouter.put(
+	'/edit/:id',
+	uploadImg.fields([
+		{
+			name: 'coverImg',
+			maxCount: 1,
+		},
+	]),
+	async (req, res) => {
+		try {
+			const id = req.params.id;
+			const { name, bio, age } = req.body;
+
+			const actor = await ActorModel.findById(id);
+
+			if (!actor) {
+				return res.status(404).json({
+					message: 'Actor not found',
+				});
+			}
+
+			actor.name = name ? name : actor.name;
+			actor.bio = bio ? bio : actor.bio;
+			actor.age = age ? age : actor.age;
+			actor.coverImage = req.files.coverImg
+				? req.files.coverImg[0].filename
+				: actor.coverImg;
+
+			await actor.save();
+
+			return res.status(200).json({
+				message: 'Actor Details updated successfully',
+			});
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({
+				message: 'Server Error, Try again later',
+			});
+		}
+	}
+);
+
 ActorRouter.get('/:name', async (req, res) => {
 	try {
 		const name = req.params.name;

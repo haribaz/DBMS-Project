@@ -76,6 +76,78 @@ DirectorRouter.get('/:name', async (req, res) => {
 	}
 });
 
+DirectorRouter.get('/edit/:id', async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const director = await DirectorModel.findById(id);
+
+		if (!director) {
+			return res.status(404).json({
+				message: 'Director not found',
+			});
+		}
+
+		const data = {
+			name: director.name,
+			bio: director.bio,
+			age: director.age,
+			coverImage: director.coverImage,
+			movies: director.movies,
+		};
+		return res.status(200).json({
+			details: data,
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
+DirectorRouter.put(
+	'/edit/:id',
+	uploadImg.fields([
+		{
+			name: 'coverImg',
+			maxCount: 1,
+		},
+	]),
+	async (req, res) => {
+		try {
+			const id = req.params.id;
+			const { name, bio, age } = req.body;
+
+			const director = await DirectorModel.findById(id);
+
+			if (!director) {
+				return res.status(404).json({
+					message: 'Director not found',
+				});
+			}
+
+			director.name = name ? name : director.name;
+			director.bio = bio ? bio : director.bio;
+			director.age = age ? age : director.age;
+			director.coverImage = req.files.coverImg
+				? req.files.coverImg[0].filename
+				: director.coverImg;
+
+			await director.save();
+
+			return res.status(200).json({
+				message: 'Director details updated successfully',
+			});
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({
+				message: 'Server Error, Try again later',
+			});
+		}
+	}
+);
+
 DirectorRouter.delete('/delete/:name', async (req, res) => {
 	try {
 		const dirName = req.params.name;

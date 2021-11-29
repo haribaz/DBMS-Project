@@ -12,6 +12,7 @@ const userMovieRouter = require('./routers/viewers/movie');
 const userSearchRouter = require('./routers/viewers/movie');
 const userFollowsRouter = require('./routers/viewers/follows');
 const userGenreRouter = require('./routers/viewers/genre');
+const userReviewRouter = require('./routers/viewers/review');
 
 // api.use('/', verifyJWT);
 
@@ -25,6 +26,7 @@ api.use('/user/movie', userMovieRouter);
 api.use('/user/search', userSearchRouter);
 api.use('/user/follow', userFollowsRouter);
 api.use('/user/genre', userGenreRouter);
+api.use('/user/review', userReviewRouter);
 
 //add routers here
 

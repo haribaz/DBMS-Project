@@ -1,31 +1,31 @@
 <div class="grid-container">
-	<% for(let i=0; i<10; i++) { %>
+	<% details.forEach((movie) => { %>
 	<div class="movie-card card">
 		<img
-			src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg"
+			src="/api/images/<%= movie.coverImage %>"
 			class="card-img-top"
 			alt="..."
 		/>
 		<div class="text-center card-body">
-			<h5 class="card-title movie-title">Card title</h5>
+			<h5 class="card-title movie-title"><% movie.title %></h5>
 			<div class="movie-btn-grid">
 				<button
 					class="btn btn-primary"
 					data-bs-toggle="collapse"
-					data-bs-target="#collapse<%= i %>"
+					data-bs-target="#collapse<%= movie.id %>"
 				>
 					See More
 				</button>
-				<a href="/user/showMovie" class="movie-see-more btn btn-primary">Movie Page</a>
+				<a href="/api/user/movie/<%= movie.id %>" class="movie-see-more btn btn-primary">Movie Page</a>
 			</div>
-			<div class="collapse text-primary mt-3" id="collapse<%= i %>">
+			<div class="collapse text-primary mt-3" id="collapse<%= movie.id %>">
 				<div class="card-body">
-					Actor: Vijay
+					Director: <%= movie.director %>
 					<br />
-					Director: Atle
+					Rating: <%= movie.rating %>
 				</div>
 			</div>
 		</div>
 	</div>
-	<% } %>
+	<% }) %>
 </div>

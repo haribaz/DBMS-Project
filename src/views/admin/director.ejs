@@ -17,13 +17,13 @@
 				<button
 					class="btn btn-primary"
 					data-bs-toggle="collapse"
-					data-bs-target="#collapse<%= i %>"
+					data-bs-target="#collapse<%= director.id %>"
 				>
 					See More
 				</button>
 				<a href="/api/admin/actor/<%= director.id %>" class="btn btn-primary">Director</a>
 			</div>
-			<div class="collapse text-primary mt-3" id="collapse<%= i %>">
+			<div class="collapse text-primary mt-3" id="collapse<%= director.id %>">
 				<div class="card-body">
 					Best Movie: <%= director.bestMovie %>
 					<br />

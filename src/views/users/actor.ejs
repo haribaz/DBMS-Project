@@ -7,28 +7,24 @@
 <br>
 
 <div class="grid-container">
-	<% for(let i=0; i<10; i++) { %>
+	<% details.forEach((actor) => { %>
 	<div class="movie-card card">
 		<img
-			src="https://i.pinimg.com/originals/d8/b6/f4/d8b6f4918c3d0e6ebc8440f8ab6c58a2.jpg"
+			src="/api/images/<%= actor.coverImage %>"
 			class="card-img-top"
 			alt="..."
 		/>
 		<div class="text-center card-body">
-			<h5 class="card-title movie-title">Card title</h5>
+			<h5 class="card-title movie-title"><%= actor.name %></h5>
 			<div class="follow-grid">
 				<form method="post">
 					<button type="submit" class="follow-button btn btn-primary">
 						Follow
 					</button>
 				</form>
-				<a href="/user/showActor" class="btn btn-primary"
-					>Actor Page</a
-				>
+				<a href="/api/user/actor/<%= actor.id %>" class="btn btn-primary">Actor Page</a>
 			</div>
 		</div>
 	</div>
-	<% } %>
+	<% }) %>
 </div>
-
-<a class="fixed-button btn" href="/admin/addActor"><i class="plus-sign fas fa-plus"></i></a>

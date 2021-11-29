@@ -47,11 +47,11 @@ DirectorRouter.post(
 	}
 );
 
-DirectorRouter.get('/:name', async (req, res) => {
+DirectorRouter.get('/id/:id', async (req, res) => {
 	try {
-		const name = req.params.name;
+		const id = req.params.id;
 
-		const director = await DirectorModel.findOne({ name: name });
+		const director = await DirectorModel.findById(id);
 
 		if (!director) {
 			return res.status(404).json({
@@ -76,10 +76,10 @@ DirectorRouter.get('/:name', async (req, res) => {
 	}
 });
 
-DirectorRouter.delete('/delete/:name', async (req, res) => {
+DirectorRouter.delete('/delete/:id', async (req, res) => {
 	try {
-		const dirName = req.params.name;
-		const dirObj = await DirectorModel.findOne({ name: dirName });
+		const dirId = req.params.id;
+		const dirObj = await DirectorModel.findById(dirId);
 		if (!dirObj) {
 			return res.status(404).json({
 				message: 'Director not found',

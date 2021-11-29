@@ -7,15 +7,16 @@ const { verifyUserJWT } = require('../../../middleware/jwt');
 
 followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 	try {
-		const { email } = req.jwt_payload;
+		const { id } = req.body._id;
+		//const { id } = req.jwt_payload;
 		if (!email) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
 			});
 		}
 		const genreName = req.params.genre;
-		const genreObj = await GenreModel.findOne({ genreName: genreName });
-		const userObj = await UserModel.findOne({ email: email });
+		const genreObj = await GenreModel.findOne({ name: genreName });
+		const userObj = await UserModel.UserModel.findById(id);
 
 		if (!genreObj) {
 			return res.status(400).json({
@@ -38,7 +39,7 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 				);
 			} else {
 				//add director
-				userObj.followingGenres.push({ genre: genreObj });
+				userObj.followingGenres.push(genreObj);
 			}
 			UserModel.findByIdAndUpdate(userObj._id, userObj)
 				.then((updateResponse) => {
@@ -57,7 +58,9 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 
 followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 	try {
-		const { email } = req.jwt_payload;
+		const { id } = req.body._id;
+		//const { id } = req.jwt_payload;
+
 		if (!email) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
@@ -65,7 +68,7 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 		}
 		const actorName = req.params.actorName;
 		const actorObj = await ActorModel.findOne({ name: actorName });
-		const userObj = await UserModel.findOne({ email: email });
+		const userObj = await UserModel.UserModel.findById(id);
 
 		if (!actorObj) {
 			return res.status(400).json({
@@ -83,12 +86,12 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 				//remove actor
 				userObj.followingActors = userObj.followingActors.filter(
 					(ele) => {
-						ele.name != actorname;
+						ele.name != actorName;
 					}
 				);
 			} else {
 				//add actor
-				userObj.followingActors.push({ actor: actorObj });
+				userObj.followingActors.push(actorObj);
 			}
 
 			UserModel.findByIdAndUpdate(userObj._id, userObj)
@@ -108,7 +111,9 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 
 followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 	try {
-		const { email } = req.jwt_payload;
+		const { id } = req.body._id;
+		//const { id } = req.jwt_payload;
+
 		if (!email) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
@@ -116,7 +121,7 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 		}
 		const dirName = req.params.dirName;
 		const dirObj = await DirModel.findOne({ name: dirName });
-		const userObj = await UserModel.findOne({ email: email });
+		const userObj = await UserModel.findById(id);
 
 		if (!dirObj) {
 			return res.status(400).json({
@@ -139,7 +144,7 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 				);
 			} else {
 				//add director
-				userObj.followingDirectors.push({ director: dirObj });
+				userObj.followingDirectors.push(dirObj);
 			}
 			UserModel.findByIdAndUpdate(userObj._id, userObj)
 				.then((updateResponse) => {
@@ -155,3 +160,5 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 		});
 	}
 });
+
+module.exports = followsRouter;

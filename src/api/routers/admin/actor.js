@@ -49,11 +49,11 @@ ActorRouter.post(
 	}
 );
 
-ActorRouter.get('/:name', async (req, res) => {
+ActorRouter.get('/id/:id', async (req, res) => {
 	try {
-		const name = req.params.name;
+		const id = req.params.id;
 
-		const actor = await ActorModel.findOne({ name: name });
+		const actor = await ActorModel.findById(id);
 
 		if (!actor) {
 			return res.status(404).json({
@@ -79,10 +79,10 @@ ActorRouter.get('/:name', async (req, res) => {
 	}
 });
 
-ActorRouter.delete('/delete/:name', async (req, res) => {
+ActorRouter.delete('/delete/:id', async (req, res) => {
 	try {
-		const actorName = req.params.name;
-		const actorObj = await ActorModel.findOne({ name: actorName });
+		const actorId = req.params.id;
+		const actorObj = await ActorModel.findById(actorId);
 		if (!actorObj) {
 			return res.status(400).json({
 				message: 'Actor not found',

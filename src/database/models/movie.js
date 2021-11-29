@@ -26,6 +26,10 @@ const movieSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	genre: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Genre',
+	},
 	director: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Director',

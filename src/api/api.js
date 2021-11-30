@@ -36,7 +36,7 @@ api.use('/user/following', userFollowingRouter);
 api.use('/user/genre', userGenreRouter);
 api.use('/user/review', userReviewRouter);
 
-api.use('/image', imageRouter);
+api.use('/images', imageRouter);
 
 //add routers here
 

@@ -4,10 +4,11 @@ const imageRouter = express.Router();
 const path = require('path');
 const fs = require('fs');
 
-imageRouter.get('/', (req, res) => {
+imageRouter.get('/:id', (req, res) => {
 	try {
-		const { photo } = req.query;
-
+		const photo = req.params.id;
+		// const { photo } = req.query;
+		console.log(photo);
 		if (!photo) {
 			return res.status(400).json({
 				message: 'query incomplete',

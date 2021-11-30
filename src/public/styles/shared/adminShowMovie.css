@@ -5,7 +5,11 @@
 	--movie-cover-width-large: 250px;
 	--movie-cover-aspect-ratio: 0.75;
 }
-
+.image-card {
+	object-fit: cover;
+	width: 300px;
+	height: 300px;
+}
 .movie-cover-small-alt {
 	width: var(--movie-cover-width-small-alt);
 	height: calc(

@@ -32,6 +32,8 @@ MovieRouter.get('/show/:id', async (req, res) => {
 			createdAt: movie.createdAt,
 			director: movie.director,
 			cast: movie.cast,
+			reviews: movie.reviews,
+			avgRating: movie.avgRating,
 			coverImage: movie.coverImage,
 		};
 		return res.render('users/showMovie', {
@@ -49,16 +51,17 @@ MovieRouter.get('/show/:id', async (req, res) => {
 MovieRouter.post('/review/:movieId', async (req, res) => {
 	try {
 		const { id } = req.jwt_payload;
-		const { name, review, rating } = req.body;
+		const { review, rating } = req.body;
 		//name from jwt payload
 		//const { id, name } = req.jwt_payload;
 
 		const movieId = req.params.movieId;
 		const movieObj = await MovieModel.findById(movieId);
 		const userObj = await UserModel.findById(id);
+		const name = userObj.name;
 
 		//add for name and id also
-		if (!id || !name || !review || !rating) {
+		if (!id || !review || !rating) {
 			return res.status(400).json({
 				message: 'Fill all fields',
 			});
@@ -99,9 +102,7 @@ MovieRouter.post('/review/:movieId', async (req, res) => {
 		userObj.reviews.push(revUser);
 		await movieObj.save();
 		await userObj.save();
-		return res.status(200).json({
-			message: 'Successfully Added',
-		});
+		return res.redirect('/api/user/movie/show/' + movieObj._id);
 	} catch (err) {
 		console.log(err.message);
 		return res.status(500).json({

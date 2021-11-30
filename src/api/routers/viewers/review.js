@@ -12,8 +12,9 @@ ReviewRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(400).json({
+		return res.render('users/reviews', {
 			details: userObj.reviews,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		return res.status(500).json({

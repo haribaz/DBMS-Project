@@ -6,7 +6,7 @@
 		<div class="movie-card card">
 			<img
 				src="/api/images/<%= movie.coverImage %>"
-				class="card-img-top movie-cover"
+				class="card-img-top image-card"
 				alt="..."
 			/>
 			<div class="text-center card-body">
@@ -19,7 +19,7 @@
 					>
 						See More
 					</button>
-					<a href="/api/user/movie/<%= movie.id %>" class="movie-see-more btn btn-primary">Movie Page</a>
+					<a href="/api/user/movie/show/<%= movie.id %>" class="movie-see-more btn btn-primary">Movie Page</a>
 				</div>
 				<div class="collapse text-primary mt-3" id="collapse<%= movie.id %>">
 					<div class="card-body">

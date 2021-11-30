@@ -89,6 +89,12 @@ MovieRouter.post('/review/:movieId', async (req, res) => {
 			rating: rating,
 		};
 
+		let val = Number(movieObj.avgRating.value);
+		let c = Number(movieObj.avgRating.count);
+		// console.log(val);
+		movieObj.avgRating.value = (c * val + Number(rating)) / (c + 1);
+		movieObj.avgRating.count = c + 1;
+
 		movieObj.reviews.push(revMovie);
 		userObj.reviews.push(revUser);
 		await movieObj.save();
@@ -212,6 +218,39 @@ MovieRouter.get('/home', async (req, res) => {
 			actors: actorList,
 			directors: directorList,
 			layout: 'layouts/userHome',
+		});
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({
+			message: 'Server Error, Try again later',
+		});
+	}
+});
+
+MovieRouter.get('/top/:page', async (req, res) => {
+	try {
+		let page = req.params.page;
+		const limit = 10;
+
+		if (page <= 0) page = 1;
+
+		const movies = await MovieModel.find()
+			.sort({ avgRating: -1 })
+			.limit(limit * 1)
+			.skip((page - 1) * limit);
+
+		let count = await MovieModel.find().count();
+		count = Math.ceil(count / limit);
+
+		if (!movies) {
+			return res.status(404).json({
+				message: 'No movies not found',
+			});
+		}
+
+		return res.status(200).json({
+			pageCount: count,
+			details: movies,
 		});
 	} catch (err) {
 		console.log(err.message);

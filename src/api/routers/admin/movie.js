@@ -105,10 +105,13 @@ MovieRouter.post(
 			});
 
 			if (newMovie) {
-				await DirectorModel.findOneAndUpdate(director, {
-					$addToSet: { movies: newMovie._id },
-					// $addToSet: { movies: { movie: newMovie._id } },
-				});
+				await DirectorModel.findOneAndUpdate(
+					{ name: director },
+					{
+						$addToSet: { movies: newMovie._id },
+						// $addToSet: { movies: { movie: newMovie._id } },
+					}
+				);
 				await GenreModel.findOneAndUpdate(
 					{ name: genreName },
 					{

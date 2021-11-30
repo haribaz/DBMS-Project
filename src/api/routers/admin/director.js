@@ -61,13 +61,24 @@ DirectorRouter.get('/show/:id', async (req, res) => {
 			});
 		}
 
+		let x;
+
+		if (!director.movies) {
+			x = director.movies;
+			x.sort((a, b) => (a.avgRating.value < b.avgRating.value ? 1 : -1));
+		}
+		// console.log(x);
+
 		const data = {
 			id: director._id,
 			name: director.name,
 			bio: director.bio,
 			coverImage: director.coverImage,
 			movies: director.movies,
+			bestMovie: x[0],
 		};
+		// console.log(data);
+
 		res.render('admin/showDirector', {
 			layout: 'layouts/admin',
 			details: data,

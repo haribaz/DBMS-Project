@@ -2,13 +2,14 @@
     <div class="card mt-5" style="box-shadow: 0 0 20px black; color: var(--color-background-light)">
         <div class="row g-0">
           <div class="col-md-2">
-            <img src="/api/images/<%= review.coverImage %>" style="height: 170px" class="img-fluid rounded-start" alt="...">
+            <img src="/api/images/<%= review.movieId.coverImage %>" style="height: 170px" class="img-fluid rounded-start" alt="...">
           </div>
           <div class="col-md-10">
             <div class="card-body">
-              <h5 class="card-title"><%= review.name %></h5>
+              <div style="font-size:1.25rem; font-weight: 600;">Review</div>
               <p class="card-text"><%= review.review %></p>
-              <p class="card-text"><small class="text-muted"><%= review.rating %></small></p>
+              <div style="font-size:1.2rem; font-weight: 600;">Rating</div>
+              <p class="card-text"><%= review.rating %></p>
             </div>
           </div>
         </div>

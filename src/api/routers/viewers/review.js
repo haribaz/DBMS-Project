@@ -5,7 +5,9 @@ ReviewRouter.get('/all', async (req, res) => {
 	//const {id} = req.jwt_payload;
 	try {
 		const { id } = req.jwt_payload;
-		const userObj = await UserModel.findById(id);
+		const userObj = await UserModel.findById(id).populate([
+			{ path: 'reviews', populate: { path: 'movieId' } },
+		]);
 		if (!userObj) {
 			return res.status(400).json({
 				message: 'User not found',

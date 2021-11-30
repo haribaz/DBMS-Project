@@ -158,6 +158,8 @@ MovieRouter.get('/show/:id', async (req, res) => {
 			releaseDate: movie.releaseDate,
 			runtime: movie.runtime,
 			genre: movie.genre,
+			reviews: movie.reviews,
+			avgRating: movie.avgRating,
 			createdAt: movie.createdAt,
 			director: movie.director,
 			cast: movie.cast,

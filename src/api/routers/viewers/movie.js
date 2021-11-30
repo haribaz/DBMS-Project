@@ -249,9 +249,16 @@ MovieRouter.get('/top/:page', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		// return res.status(200).json({
+		// 	pageCount: count,
+		// 	details: movies,
+		// });
+
+		return res.render('users/topMovie', {
+			layout: 'layouts/user',
 			pageCount: count,
 			details: movies,
+			pageNo: page,
 		});
 	} catch (err) {
 		console.log(err.message);

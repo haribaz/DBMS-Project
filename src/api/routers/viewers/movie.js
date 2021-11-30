@@ -38,7 +38,8 @@ MovieRouter.get('/:title', async (req, res) => {
 
 MovieRouter.post('/review/:movieId', async (req, res) => {
 	try {
-		const { id, name, review, rating } = req.body;
+		const { id } = req.jwt_payload;
+		const { name, review, rating } = req.body;
 		//name from jwt payload
 		//const { id, name } = req.jwt_payload;
 

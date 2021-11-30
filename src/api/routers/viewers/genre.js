@@ -22,6 +22,7 @@ genreRouter.get('/all', async (req, res) => {
 	}
 });
 
+//should remove this
 genreRouter.post('/add', async (req, res) => {
 	try {
 		const { genreName } = req.body;
@@ -34,7 +35,7 @@ genreRouter.post('/add', async (req, res) => {
 
 		if (await genreModel.findOne({ name: genreName }))
 			return res.status(400).json({
-				message: 'Actor already exists',
+				message: 'Genre already exists',
 			});
 
 		const newGenre = await genreModel.create({

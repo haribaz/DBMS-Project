@@ -43,7 +43,7 @@ const movieSchema = new mongoose.Schema({
 		},
 	],
 	avgRating: {
-		value: { type: Number, default: 0 },
+		value: { type: mongoose.Decimal128, default: 0 },
 		count: { type: Number, default: 0 },
 	},
 	reviews: [

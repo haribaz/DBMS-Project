@@ -8,6 +8,7 @@
 @import './shared/userFollow.css';
 @import './shared/genreAccordion.css';
 @import './shared/topMovie.css';
+@import './shared/logout.css';
 
 *,
 *::before,

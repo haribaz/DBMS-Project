@@ -156,4 +156,9 @@ AuthRouter.post('/register', async (req, res) => {
 	}
 });
 
+AuthRouter.get('/logout', async (req, res) => {
+	res.clearCookie('token');
+	res.redirect('/auth/login');
+});
+
 module.exports = AuthRouter;

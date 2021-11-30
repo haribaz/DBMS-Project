@@ -24,7 +24,7 @@
           </tr>
           <tr>
              <td class="table-cell-alt"><div class="movie-details-label">Genre</div></td>
-             <td class="table-cell"><div><%= details.genre %></div></td>
+             <td class="table-cell"><div><%= details.genre.name %></div></td>
           </tr>
           <tr>
              <td class="table-cell-alt"><div class="movie-details-label">Description</div></td>
@@ -53,7 +53,7 @@
              <div class="carousel-inner">
               <% for (let i = 0; i < details.cast.length; i++) { %>
                 <div class="carousel-item <% if (i === 0) { %> active <% } %>">
-                   <a href="/api/admin/actor/<%= details.cast[i].id %>"><img src="/api/images/<%= details.cast[i].coverImage %>" class="d-block movie-cover" alt="..."></a>
+                   <a href="/api/user/actor/show/<%= details.cast[i].id %>"><img src="/api/images/<%= details.cast[i].coverImage %>" class="d-block movie-cover" alt="..."></a>
                 </div>
              <% } %>
              </div>

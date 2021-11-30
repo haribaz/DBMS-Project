@@ -16,7 +16,7 @@ DirectorRouter.get('/show/:dirId', async (req, res) => {
 			});
 		}
 
-		const director = await DirectorModel.findById(dirId);
+		const director = await DirectorModel.findById(dirId).populate('movies');
 
 		if (!director) {
 			return res.status(404).json({
@@ -25,23 +25,25 @@ DirectorRouter.get('/show/:dirId', async (req, res) => {
 		}
 
 		let isfollowing;
-		for (x in userObj.followingDirectors) {
+		for (const x of userObj.followingDirectors) {
 			isfollowing = false;
-			if (x._id === dirId) {
+			if (x._id.equals(director._id)) {
 				isfollowing = true;
 				break;
 			}
 		}
 
 		const data = {
+			id: director._id,
 			name: director.name,
 			bio: director.bio,
 			coverImage: director.coverImage,
 			movies: director.movies,
 			isfollowing: isfollowing,
 		};
-		return res.status(200).json({
+		return res.render('users/showDirector', {
 			details: data,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		console.log(err.message);
@@ -70,9 +72,9 @@ DirectorRouter.get('/all', async (req, res) => {
 				name: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			}).populate('movies');
 		} else {
-			directorObjects = await DirectorModel.find();
+			directorObjects = await DirectorModel.find().populate('movies');
 		}
 
 		if (!directorObjects) {
@@ -82,16 +84,17 @@ DirectorRouter.get('/all', async (req, res) => {
 		}
 
 		let directors = [];
-		let isfollowing = false;
+		let isfollowing;
 		for (const x of directorObjects) {
 			isfollowing = false;
 			for (const y of userObj.followingDirectors) {
-				if (y.id === x._id) {
+				if (y._id.equals(x._id)) {
 					isfollowing = true;
 					break;
 				}
 			}
 			directors.push({
+				id: x._id,
 				name: x.name,
 				bio: x.bio,
 				age: x.age,
@@ -101,8 +104,9 @@ DirectorRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		return res.render('users/director', {
 			details: directors,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		console.log(err.message);

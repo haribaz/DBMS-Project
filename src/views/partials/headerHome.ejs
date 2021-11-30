@@ -16,23 +16,23 @@
 		</form>
 	</div>
 	<nav class="nav nav-pills nav-fill">
-		<a class="header-nav-item nav-link active" href="/user/home">Home</a>
+		<a class="header-nav-item nav-link active" href="/api/user/movie/home">Home</a>
 		<li class="nav-item dropdown">
 			<a class=" header-nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown">All</a>
 			<ul class="dropdown-menu">
-			  <li><a class="dropdown-item" href="/user/movie/top">Top Movies</a></li>
+			  <li><a class="dropdown-item" href="/api/user/movie/top">Top Movies</a></li>
 			  <li><hr class="dropdown-divider"></li>
-			  <li><a class="dropdown-item" href="/user/actors">Actors</a></li>
-			  <li><a class="dropdown-item" href="/user/directors">Directors</a></li>
-			  <li><a class="dropdown-item" href="/user/genres">Genre</a></li>
+			  <li><a class="dropdown-item" href="/api/user/actor/all">Actors</a></li>
+			  <li><a class="dropdown-item" href="/api/user/director/all">Directors</a></li>
+			  <li><a class="dropdown-item" href="/api/user/genre/all">Genre</a></li>
 			</ul>
 		  </li>
 		<li class="nav-item dropdown">
 			<a class=" header-nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown">Following</a>
 			<ul class="dropdown-menu">
-			  <li><a class="dropdown-item" href="/user/following/actors">Actors</a></li>
-			  <li><a class="dropdown-item" href="/user/following/directors">Directors</a></li>
-			  <li><a class="dropdown-item" href="/user/following/genres">Genre</a></li>
+			  <li><a class="dropdown-item" href="/api/user/following/actors">Actors</a></li>
+			  <li><a class="dropdown-item" href="/api/user/following/directors">Directors</a></li>
+			  <li><a class="dropdown-item" href="/api/user/following/genres">Genre</a></li>
 			</ul>
 		  </li>
 		<a class="header-nav-item nav-link" href="/user/reviews">Reviews</a>
@@ -41,25 +41,25 @@
 
 <div class="collapse" id="expanded-form" >
 	<div class="card card-body bg-secondary">
-		<form method="GET">
+		<form action="/api/user/search/" method="GET">
 			<input class="form-control mb-3" placeholder="Movie Name" name="title" />
 			<select class="form-select mb-3" name="genre">
 				<option value="" disabled hidden selected>Genre</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
+				<% genres.forEach((genre) => { %>
+				<option value="<%= genre.name %>"><%= genre.name %></option>
+				<% }) %>
 			</select>
 			<select class="form-select mb-3" name="actor">
 				<option value="" disabled hidden selected>Actor</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
+				<% actors.forEach((actor) => { %>
+				<option value="<%= actor.name %>"><%= actor.name %></option>
+				<% }) %>
 			</select>
 			<select class="form-select mb-3" name="director">
 				<option value="" disabled hidden selected>Director</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
+				<% directors.forEach((director) => { %>
+				<option value="<%= director.name %>"><%= director.name %></option>
+				<% }) %>
 			</select>
 			<button type="submit" class="btn btn-primary" style="margin-left: 70.5%;">Search</button>
 		</form>

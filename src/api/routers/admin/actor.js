@@ -4,6 +4,9 @@ const ActorModel = require('../../../database/models/actor');
 const MovieModel = require('../../../database/models/movie');
 const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
+ActorRouter.get('/add', async (req, res) => {
+	res.render('admin/addActor', { layout: 'layouts/admin' });
+});
 
 ActorRouter.post(
 	'/add',
@@ -36,9 +39,7 @@ ActorRouter.post(
 			});
 
 			if (newActor) {
-				return res.status(200).json({
-					message: 'Success',
-				});
+				res.redirect('/api/admin/actor/show/' + newActor._id);
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -62,13 +63,15 @@ ActorRouter.get('/edit/:id', async (req, res) => {
 		}
 
 		const data = {
+			id: actor._id,
 			name: actor.name,
 			bio: actor.bio,
 			age: actor.age,
 			coverImage: actor.coverImage,
 			movies: actor.movies,
 		};
-		return res.status(200).json({
+		res.render('admin/editActor', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -109,9 +112,7 @@ ActorRouter.put(
 
 			await actor.save();
 
-			return res.status(200).json({
-				message: 'Actor Details updated successfully',
-			});
+			return res.redirect('/api/admin/actor/show/' + id);
 		} catch (err) {
 			console.log(err.message);
 			return res.status(500).json({
@@ -125,7 +126,7 @@ ActorRouter.get('/show/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 
-		const actor = await ActorModel.findById(id);
+		const actor = await ActorModel.findById(id).populate('movies');
 
 		if (!actor) {
 			return res.status(404).json({
@@ -134,13 +135,15 @@ ActorRouter.get('/show/:id', async (req, res) => {
 		}
 
 		const data = {
+			id: actor._id,
 			name: actor.name,
 			bio: actor.bio,
 			age: actor.age,
 			coverImage: actor.coverImage,
 			movies: actor.movies,
 		};
-		return res.status(200).json({
+		res.render('admin/showActor', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -161,9 +164,9 @@ ActorRouter.get('/all', async (req, res) => {
 				name: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			}).populate('movies');
 		} else {
-			actorObjects = await ActorModel.find();
+			actorObjects = await ActorModel.find().populate('movies');
 		}
 
 		if (!actorObjects) {
@@ -172,7 +175,8 @@ ActorRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		return res.render('admin/actor', {
+			layout: 'layouts/admin',
 			details: actorObjects,
 		});
 	} catch (err) {
@@ -186,7 +190,7 @@ ActorRouter.get('/all', async (req, res) => {
 ActorRouter.delete('/delete/:id', async (req, res) => {
 	try {
 		const actorId = req.params.id;
-		const actorObj = await ActorModel.findById(actorId);
+		const actorObj = await ActorModel.findById(actorId).populate('movies');
 		if (!actorObj) {
 			return res.status(400).json({
 				message: 'Actor not found',
@@ -198,16 +202,9 @@ ActorRouter.delete('/delete/:id', async (req, res) => {
 						'Actor part of movies in database. Cannot be deleted',
 				});
 			} else {
-				try {
-					const result = ActorModel.findByIdAndDelete(actorObj._id);
-					return res.status(200).json({
-						message: 'Actor Deleted',
-					});
-				} catch (err) {
-					return res.status(400).json({
-						message: err.message,
-					});
-				}
+				const result = await ActorModel.findByIdAndDelete(actorObj._id);
+				console.log(result);
+				return res.redirect('/api/admin/actor/all');
 			}
 		}
 	} catch (err) {

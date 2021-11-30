@@ -21,7 +21,7 @@
 				>
 					See More
 				</button>
-				<a href="/api/admin/actor/<%= director.id %>" class="btn btn-primary">Director</a>
+				<a href="/api/admin/director/show/<%= director.id %>" class="btn btn-primary">Director</a>
 			</div>
 			<div class="collapse text-primary mt-3" id="collapse<%= director.id %>">
 				<div class="card-body">
@@ -32,7 +32,7 @@
 			</div>
 		</div>
 	</div>
-	<% } %>
+	<% }) %>
 </div>
 
 <a class="fixed-button btn" href="/api/admin/director/add"><i class="plus-sign fas fa-plus"></i></a>

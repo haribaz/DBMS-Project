@@ -8,6 +8,19 @@ const GenreModel = require('../../../database/models/genre');
 const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
 
+MovieRouter.get('/add', async (req, res) => {
+	const directors = await DirectorModel.find({});
+	const actors = await ActorModel.find({});
+	const genres = await GenreModel.find({});
+	console.log(directors);
+	data = {
+		directors,
+		actors,
+		genres,
+	};
+	res.render('admin/addMovie', { layout: 'layouts/admin', details: data });
+});
+
 MovieRouter.post(
 	'/add',
 	uploadImg.fields([
@@ -18,6 +31,7 @@ MovieRouter.post(
 	]),
 	async (req, res) => {
 		try {
+			console.log(req.body);
 			const {
 				title,
 				description,
@@ -112,9 +126,7 @@ MovieRouter.post(
 					});
 				}
 
-				return res.status(200).json({
-					message: 'Success',
-				});
+				return res.redirect('/api/admin/movie/show/' + newMovie._id);
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -128,7 +140,10 @@ MovieRouter.post(
 MovieRouter.get('/show/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
-		const movie = await MovieModel.findById(id);
+		const movie = await MovieModel.findById(id)
+			.populate('director')
+			.populate('genre')
+			.populate('cast');
 
 		if (!movie) {
 			return res.status(404).json({
@@ -137,16 +152,19 @@ MovieRouter.get('/show/:id', async (req, res) => {
 		}
 
 		const data = {
+			id: movie._id,
 			title: movie.title,
 			description: movie.description,
 			releaseDate: movie.releaseDate,
 			runtime: movie.runtime,
+			genre: movie.genre,
 			createdAt: movie.createdAt,
 			director: movie.director,
 			cast: movie.cast,
 			coverImage: movie.coverImage,
 		};
-		return res.status(200).json({
+		res.render('admin/showMovie', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -161,25 +179,32 @@ MovieRouter.get('/edit/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 
-		const movie = await MovieModel.findById(id);
+		const movie = await MovieModel.findById(id)
+			.populate('director')
+			.populate('genre')
+			.populate('cast');
 
 		if (!movie) {
 			return res.status(404).json({
 				message: 'Movie not found',
 			});
 		}
-
+		console.log(movie.releaseDate);
+		console.log(movie.description);
 		const data = {
+			id: movie._id,
 			title: movie.title,
 			description: movie.description,
 			releaseDate: movie.releaseDate,
+			genre: movie.genre,
 			runtime: movie.runtime,
 			createdAt: movie.createdAt,
 			director: movie.director,
 			cast: movie.cast,
 			coverImage: movie.coverImage,
 		};
-		return res.status(200).json({
+		res.render('admin/editMovie', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -222,9 +247,7 @@ MovieRouter.put(
 
 			await movie.save();
 
-			return res.status(200).json({
-				message: 'Movie details updated successfully',
-			});
+			return res.redirect('/api/admin/movie/show/' + id);
 		} catch (err) {
 			console.log(err.message);
 			return res.status(500).json({
@@ -283,9 +306,7 @@ MovieRouter.delete('/delete/:id', async (req, res) => {
 			try {
 				const result = await MovieModel.findByIdAndDelete(movieId);
 				console.log(result);
-				return res.status(200).json({
-					message: 'Movie Deleted',
-				});
+				res.redirect('/api/admin/movie/all');
 			} catch (err) {
 				return res.status(400).json({
 					message: err.message,
@@ -312,9 +333,15 @@ MovieRouter.get('/all', async (req, res) => {
 				title: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			})
+				.populate('director')
+				.populate('genre')
+				.populate('cast');
 		} else {
-			movieObjects = await MovieModel.find();
+			movieObjects = await MovieModel.find()
+				.populate('director')
+				.populate('genre')
+				.populate('cast');
 		}
 
 		if (!movieObjects) {
@@ -323,7 +350,8 @@ MovieRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		return res.render('admin/movie', {
+			layout: 'layouts/admin',
 			details: movieObjects,
 		});
 	} catch (err) {

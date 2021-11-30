@@ -12,6 +12,11 @@ SearchRouter.get('/', async (req, res) => {
 		const actor = req.query.actor;
 		const director = req.query.director;
 		console.log(title);
+
+		const genreList = await GenreModel.find({});
+		const actorList = await ActorModel.find({});
+		const directorList = await DirectorModel.find({});
+
 		let moviesByTitle;
 
 		if (title) {
@@ -19,9 +24,15 @@ SearchRouter.get('/', async (req, res) => {
 				title: {
 					$regex: new RegExp(title, 'i'),
 				},
-			});
+			})
+				.populate('director')
+				.populate('cast')
+				.populate('genre');
 		} else {
-			moviesByTitle = await MovieModel.find({});
+			moviesByTitle = await MovieModel.find({})
+				.populate('director')
+				.populate('cast')
+				.populate('genre');
 		}
 		// console.log(moviesByTitle);
 		let moviesByActor;
@@ -32,9 +43,12 @@ SearchRouter.get('/', async (req, res) => {
 			console.log('asd');
 			// console.log(actorObj.movies);
 			if (!actorObj || (actorObj && actorObj.movies.length == 0)) {
-				console.log('actor');
-				return res.status(200).json({
-					message: 'No movies found',
+				return res.render('users/home', {
+					details: [],
+					genres: genreList,
+					actors: actorList,
+					directors: directorList,
+					layout: 'layouts/userHome',
 				});
 			}
 			moviesByActor = actorObj.movies;
@@ -54,9 +68,12 @@ SearchRouter.get('/', async (req, res) => {
 			console.log('dir');
 			const dirObj = await DirectorModel.findOne({ name: director });
 			if (!dirObj || (dirObj && dirObj.movies.length == 0)) {
-				console.log('dir');
-				return res.status(200).json({
-					message: 'No movies found',
+				return res.render('users/home', {
+					details: [],
+					genres: genreList,
+					actors: actorList,
+					directors: directorList,
+					layout: 'layouts/userHome',
 				});
 			}
 			moviesByDirector = dirObj.movies;
@@ -72,9 +89,12 @@ SearchRouter.get('/', async (req, res) => {
 			console.log('genre');
 			const genreObj = await GenreModel.findOne({ name: genre });
 			if (!genreObj || (genreObj && genreObj.movies.length == 0)) {
-				console.log('dir');
-				return res.status(200).json({
-					message: 'No movies found',
+				return res.render('users/home', {
+					details: [],
+					genres: genreList,
+					actors: actorList,
+					directors: directorList,
+					layout: 'layouts/userHome',
 				});
 			}
 			moviesByGenre = genreObj.movies;
@@ -85,8 +105,12 @@ SearchRouter.get('/', async (req, res) => {
 		}
 		console.log(filteredMovies);
 		if (!filteredMovies) {
-			return res.status(200).json({
-				message: 'No movies found',
+			return res.render('users/home', {
+				details: [],
+				genres: genreList,
+				actors: actorList,
+				directors: directorList,
+				layout: 'layouts/userHome',
 			});
 		}
 
@@ -100,8 +124,14 @@ SearchRouter.get('/', async (req, res) => {
 		// 	cast: filteredMovies.cast,
 		// 	coverImage: filteredMovies.coverImage,
 		// };
-		return res.status(200).json({
+
+		console.log(filteredMovies);
+		return res.render('users/home', {
 			details: filteredMovies,
+			genres: genreList,
+			actors: actorList,
+			directors: directorList,
+			layout: 'layouts/userHome',
 		});
 	} catch (err) {
 		console.log(err.message);

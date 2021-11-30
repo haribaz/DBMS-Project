@@ -3,6 +3,7 @@ require('dotenv').config({ path: './src/env/.env' });
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
 const apiRouter = require('./src/api/api');
 const authRouter = require('./src/api/auth');
 
@@ -18,6 +19,7 @@ if (!fs.existsSync('./images')) {
 	fs.mkdirSync('./images');
 }
 
+app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/src/views'));
 app.use(expressLayouts);

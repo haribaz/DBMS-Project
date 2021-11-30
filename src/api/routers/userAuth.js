@@ -7,10 +7,14 @@ const AdminModel = require('../../database/models/admin');
 
 const { createUserJWT, createAdminJWT } = require('../../middleware/jwt');
 
+AuthRouter.get('/login', async (req, res) => {
+	res.render('login', { layout: 'layouts/login' });
+});
+
 AuthRouter.post('/login', async (req, res) => {
 	try {
 		const { email, password, isAdm } = req.body;
-		console.log(req.body);
+		// console.log(req.body);
 		if (!email || !password || !isAdm) {
 			return res.status(400).json({
 				message: 'Fill all the fields',
@@ -23,10 +27,8 @@ AuthRouter.post('/login', async (req, res) => {
 			if (user) {
 				if (await bcrypt.compare(password, user.password)) {
 					const token = await createUserJWT(user);
-					return res.status(200).json({
-						message: 'Success',
-						token,
-					});
+					res.cookie('token', token);
+					return res.redirect('/api/user/movie/home');
 				}
 				return res.status(401).json({
 					message: 'Incorrect username and password',
@@ -42,10 +44,8 @@ AuthRouter.post('/login', async (req, res) => {
 			if (admin) {
 				if (await bcrypt.compare(password, admin.password)) {
 					const token = await createAdminJWT(admin);
-					return res.status(200).json({
-						message: 'Success',
-						token,
-					});
+					res.cookie('token', token);
+					return res.redirect('/api/admin/movie/all');
 				}
 				return res.status(401).json({
 					message: 'Incorrect username and password',
@@ -64,8 +64,13 @@ AuthRouter.post('/login', async (req, res) => {
 	}
 });
 
+AuthRouter.get('/register', async (req, res) => {
+	res.render('register', { layout: 'layouts/login' });
+});
+
 AuthRouter.post('/register', async (req, res) => {
 	try {
+		console.log(req.body);
 		const { email, name, password, cpassword, isAdm } = req.body;
 		if (!email || !name || !password || !cpassword || !isAdm) {
 			return res.status(400).json({
@@ -73,7 +78,7 @@ AuthRouter.post('/register', async (req, res) => {
 			});
 		}
 		if (isAdm != 'true') {
-			console.log('user');
+			// console.log('user');
 			if (await UserModel.findOne({ email: email }))
 				return res.status(400).json({
 					message: 'Account with this email already exists',
@@ -104,10 +109,8 @@ AuthRouter.post('/register', async (req, res) => {
 			});
 			if (newUser) {
 				const token = await createUserJWT(newUser);
-				return res.status(200).json({
-					message: 'Success',
-					token,
-				});
+				res.cookie('token', token);
+				return res.redirect('/api/user/movie/home');
 			}
 		} else {
 			if (await AdminModel.findOne({ email: email }))
@@ -141,10 +144,8 @@ AuthRouter.post('/register', async (req, res) => {
 			});
 			if (newUser) {
 				const token = await createAdminJWT(newUser);
-				return res.status(200).json({
-					message: 'Success',
-					token,
-				});
+				res.cookie('token', token);
+				return res.redirect('/api/admin/movie/all');
 			}
 		}
 	} catch (err) {

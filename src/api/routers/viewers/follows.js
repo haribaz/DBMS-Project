@@ -5,17 +5,17 @@ const GenreModel = require('../../../database/models/genre');
 const UserModel = require('../../../database/models/user');
 const { verifyUserJWT } = require('../../../middleware/jwt');
 
-followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
+followsRouter.put('/genre/:genreId', verifyUserJWT, async (req, res) => {
 	try {
-		const id = req.jwt_payload.id;
+		const { id } = req.jwt_payload;
 		// const { id } = req.body._id;
-		if (!email) {
+		if (!id) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
 			});
 		}
-		const genreName = req.params.genre;
-		const genreObj = await GenreModel.findOne({ name: genreName });
+		const genreId = req.params.genreId;
+		const genreObj = await GenreModel.findById(genreId);
 		const userObj = await UserModel.findById(id);
 
 		if (!genreObj) {
@@ -27,14 +27,14 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 				message: 'User not found',
 			});
 		} else {
-			var ind = userObj.followingGenres.findIndex(
-				(ele) => ele.name == genreName
+			let ind = userObj.followingGenres.findIndex(
+				(ele) => ele._id == genreId
 			);
 			if (ind != -1) {
 				//remove director
 				userObj.followingGenres = userObj.followingGenres.filter(
 					(ele) => {
-						ele.name != genreName;
+						ele._id != genreId;
 					}
 				);
 			} else {
@@ -42,26 +42,29 @@ followsRouter.put('/genre/:genre', verifyUserJWT, async (req, res) => {
 				userObj.followingGenres.push(genreObj);
 			}
 			await userObj.save();
+			return res.status(200).json({
+				message: 'Follow/Unfollow genre success',
+			});
 		}
 	} catch (err) {
 		return res.status(500).json({
-			message: 'Server Error! Try Again Later',
+			message: 'Server Error! Try Again Later ' + err.message,
 		});
 	}
 });
 
-followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
+followsRouter.put('/actor/:actorId', verifyUserJWT, async (req, res) => {
 	try {
 		const id = req.jwt_payload.id;
 		// const { id } = req.body._id;
 
-		if (!email) {
+		if (!id) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
 			});
 		}
-		const actorName = req.params.actorName;
-		const actorObj = await ActorModel.findOne({ name: actorName });
+		const actorId = req.params.actorId;
+		const actorObj = await ActorModel.findById(actorId);
 		const userObj = await UserModel.findById(id);
 
 		if (!actorObj) {
@@ -73,22 +76,24 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 				message: 'User not found',
 			});
 		} else {
-			var ind = userObj.followingActors.findIndex(
-				(ele) => ele.name == actorName
+			let ind = userObj.followingActors.findIndex(
+				(ele) => ele._id == actorId
 			);
 			if (ind != -1) {
 				//remove actor
 				userObj.followingActors = userObj.followingActors.filter(
 					(ele) => {
-						ele.name != actorName;
+						ele._id != actorId;
 					}
 				);
 			} else {
 				//add actor
 				userObj.followingActors.push(actorObj);
 			}
-
 			await userObj.save();
+			return res.status(200).json({
+				message: 'Follow/Unfollow actor success',
+			});
 		}
 	} catch (err) {
 		return res.status(500).json({
@@ -97,18 +102,18 @@ followsRouter.put('/actor/:actorName', verifyUserJWT, async (req, res) => {
 	}
 });
 
-followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
+followsRouter.put('/director/:dirId', verifyUserJWT, async (req, res) => {
 	try {
-		const id = req.jwt_payload.id;
+		const { id } = req.jwt_payload;
 		// const { id } = req.body._id;
 
-		if (!email) {
+		if (!id) {
 			return res.status(400).json({
 				message: 'User not Authenticate, Try to login again',
 			});
 		}
-		const dirName = req.params.dirName;
-		const dirObj = await DirModel.findOne({ name: dirName });
+		const dirId = req.params.dirId;
+		const dirObj = await DirModel.findById(dirId);
 		const userObj = await UserModel.findById(id);
 
 		if (!dirObj) {
@@ -120,14 +125,14 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 				message: 'User not found',
 			});
 		} else {
-			var ind = userObj.followingDirectors.findIndex(
-				(ele) => ele.name == dirName
+			let ind = userObj.followingDirectors.findIndex(
+				(ele) => ele._id == dirId
 			);
 			if (ind != -1) {
 				//remove director
 				userObj.followingDirectors = userObj.followingDirectors.filter(
 					(ele) => {
-						ele.name != dirName;
+						ele._id != dirId;
 					}
 				);
 			} else {
@@ -135,6 +140,9 @@ followsRouter.put('/director/:dirName', verifyUserJWT, async (req, res) => {
 				userObj.followingDirectors.push(dirObj);
 			}
 			await userObj.save();
+			return res.status(200).json({
+				message: 'Follow/Unfollow director success',
+			});
 		}
 	} catch (err) {
 		return res.status(500).json({

@@ -3,9 +3,10 @@ const UserModel = require('../../../database/models/user');
 
 FollowingRouter.get('/actors', async (req, res) => {
 	try {
-		//const {id} = req.jwt_payload;
-		const { id } = req.body;
-		const userObj = UserModel.findById(id);
+		const { id } = req.jwt_payload;
+		const userObj = await UserModel.findById(id).populate(
+			'followingActors'
+		);
 		if (!userObj) {
 			return res.status(400).json({
 				message: 'User not found',
@@ -16,16 +17,17 @@ FollowingRouter.get('/actors', async (req, res) => {
 		});
 	} catch (err) {
 		return res.status(500).json({
-			message: 'Server Error! Try Again Later',
+			message: 'Server Error! Try Again Later ' + err.message,
 		});
 	}
 });
 
 FollowingRouter.get('/directors', async (req, res) => {
 	try {
-		//const {id} = req.jwt_payload;
-		const { id } = req.body;
-		const userObj = UserModel.findById(id);
+		const { id } = req.jwt_payload;
+		const userObj = await UserModel.findById(id).populate(
+			'followingDirectors'
+		);
 		if (!userObj) {
 			return res.status(400).json({
 				message: 'User not found',
@@ -43,9 +45,10 @@ FollowingRouter.get('/directors', async (req, res) => {
 
 FollowingRouter.get('/genres', async (req, res) => {
 	try {
-		//const {id} = req.jwt_payload;
-		const { id } = req.body;
-		const userObj = UserModel.findById(id);
+		const { id } = req.jwt_payload;
+		const userObj = await UserModel.findById(id).populate(
+			'followingGenres'
+		);
 		if (!userObj) {
 			return res.status(400).json({
 				message: 'User not found',

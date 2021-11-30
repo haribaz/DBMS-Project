@@ -24,6 +24,7 @@ MovieRouter.post(
 				releaseDate,
 				runtime,
 				// createdAt,
+				genreName,
 				director,
 				cast,
 			} = req.body;
@@ -34,6 +35,7 @@ MovieRouter.post(
 				!releaseDate ||
 				!runtime ||
 				// !createdAt ||
+				!genreName ||
 				!director ||
 				!cast ||
 				!req.files.coverImg
@@ -55,6 +57,13 @@ MovieRouter.post(
 					message: 'Director does not exist',
 				});
 
+			const genreObj = await GenreModel.findOne({ name: genreName });
+
+			if (!genreObj)
+				return res.status(400).json({
+					message: 'Genre does not exist',
+				});
+
 			for (const element of cast) {
 				if (!(await ActorModel.findOne({ name: element })))
 					return res.status(400).json({
@@ -69,6 +78,7 @@ MovieRouter.post(
 				runtime: runtime,
 				// createdAt: createdAt,
 				director: directorObj._id,
+				genre: genreObj._id,
 				// cast: cast, //populating cast below
 				coverImage: req.files.coverImg[0].filename,
 			});
@@ -78,6 +88,13 @@ MovieRouter.post(
 					$addToSet: { movies: newMovie._id },
 					// $addToSet: { movies: { movie: newMovie._id } },
 				});
+				await GenreModel.findOneAndUpdate(
+					{ name: genreName },
+					{
+						$addToSet: { movies: newMovie._id },
+						// $addToSet: { movies: { movie: newMovie._id } },
+					}
+				);
 
 				for (let element of cast) {
 					console.log(element);
@@ -251,16 +268,15 @@ MovieRouter.delete('/delete/:id', async (req, res) => {
 				});
 			}
 
-			//deleting for the genre
-			// try {
-			// 	await GenreModel.findByIdAndUpdate(movieObj.genre._id, {
-			// 		$pull: { movies: movieId },
-			// 	});
-			// } catch (err) {
-			// 	return res.status(400).json({
-			// 		message: 'Error updating respective genre',
-			// 	});
-			// }
+			try {
+				await GenreModel.findByIdAndUpdate(movieObj.genre._id, {
+					$pull: { movies: movieId },
+				});
+			} catch (err) {
+				return res.status(400).json({
+					message: 'Error updating respective genre',
+				});
+			}
 
 			//delete movie
 

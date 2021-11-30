@@ -233,10 +233,16 @@ DirectorRouter.delete('/delete/:id', async (req, res) => {
 			});
 		} else {
 			if (dirObj.movies.length !== 0) {
-				return res.status(400).json({
-					message:
-						'Director part of movies in database. Cannot be deleted',
-				});
+				// return res.render('partials/error', {
+				// 	message:
+				// 		'Director part of movies in database. Cannot be deleted',
+				// 	layout: 'layouts/admin',
+				// });
+				// popup.alert({
+				// 	content:
+				// 		'Director part of movies in database. Cannot be deleted',
+				// });
+				res.redirect('/api/admin/director/show/' + dirId);
 			} else {
 				try {
 					const result = await DirectorModel.findByIdAndDelete(

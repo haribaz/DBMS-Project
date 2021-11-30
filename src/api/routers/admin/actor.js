@@ -222,10 +222,11 @@ ActorRouter.delete('/delete/:id', async (req, res) => {
 			});
 		} else {
 			if (actorObj.movies.length !== 0) {
-				return res.status(400).json({
-					message:
-						'Actor part of movies in database. Cannot be deleted',
-				});
+				// return res.status(400).json({
+				// 	message:
+				// 		'Actor part of movies in database. Cannot be deleted',
+				// });
+				res.redirect('/api/admin/actor/show/' + actorId);
 			} else {
 				const result = await ActorModel.findByIdAndDelete(actorObj._id);
 				console.log(result);

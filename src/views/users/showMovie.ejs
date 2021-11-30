@@ -15,7 +15,7 @@
           </tr>
           <tr>
              <td class="table-cell-alt"><div class="movie-details-label">Release Date</div></td>
-             <td class="table-cell"><div><%= details.releaseDate %></div></td>
+             <td class="table-cell"><div><%= details.releaseDate.toISOString().split('T')[0] %></div></td>
  
           </tr>
           <tr>

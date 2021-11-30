@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center">
+    <table class="mt-5 top-movie-table">
+        <thead class="top-movie-header">
+            <tr>
+                <th class="table-top-header">S.No</th>
+                <th class="table-top-header">Cover</th>
+                <th class="table-top-header">Movie</th>
+                <th class="table-top-header">Rating</th>
+            </tr>
+        </thead>
+        <tbody class="top-movie-body">
+            <% for(let i=0; i<7; i++) { %>
+            <tr>
+                <td class="table-cell-top">
+                    <%= i %>
+                </td>
+                <td class="table-cell-top">
+                    <img class="movie-cover-small-alt topMovie-img" src="https://worldwideinterweb.com/wp-content/uploads/2017/10/baby-face-funny.jpg">
+                </td>
+                <td class="table-cell-top">
+                        Dark Knight
+                </td>
+                <td class="table-cell-top">
+                    5
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>

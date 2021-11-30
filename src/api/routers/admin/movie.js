@@ -286,7 +286,20 @@ MovieRouter.delete('/delete/:id', async (req, res) => {
 
 MovieRouter.get('/all', async (req, res) => {
 	try {
-		const movieObjects = await MovieModel.find();
+		// const movieObjects = await MovieModel.find();
+
+		const name = req.query.title;
+
+		let movieObjects;
+		if (name) {
+			movieObjects = await MovieModel.find({
+				title: {
+					$regex: new RegExp(name, 'i'),
+				},
+			});
+		} else {
+			movieObjects = await MovieModel.find();
+		}
 
 		if (!movieObjects) {
 			return res.status(403).json({

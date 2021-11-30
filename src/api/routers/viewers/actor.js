@@ -8,7 +8,9 @@ ActorRouter.get('/show/:actorId', async (req, res) => {
 		const actorId = req.params.actorId;
 		const { id } = req.jwt_payload;
 
-		const userObj = await UserModel.findById(id);
+		const userObj = await UserModel.findById(id).populate(
+			'followingActors'
+		);
 
 		if (!userObj) {
 			return res.status(400).json({
@@ -16,7 +18,7 @@ ActorRouter.get('/show/:actorId', async (req, res) => {
 			});
 		}
 
-		const actor = await ActorModel.findById(actorId);
+		const actor = await ActorModel.findById(actorId).populate('movies');
 
 		if (!actor) {
 			return res.status(404).json({
@@ -25,15 +27,16 @@ ActorRouter.get('/show/:actorId', async (req, res) => {
 		}
 
 		let isfollowing;
-		for (x in userObj.followingActors) {
+		for (const x of userObj.followingActors) {
 			isfollowing = false;
-			if (x._id === actorId) {
+			if (x._id.equals(actor._id)) {
 				isfollowing = true;
 				break;
 			}
 		}
 
 		const data = {
+			id: actor._id,
 			name: actor.name,
 			bio: actor.bio,
 			age: actor.age,
@@ -41,8 +44,10 @@ ActorRouter.get('/show/:actorId', async (req, res) => {
 			movies: actor.movies,
 			isfollowing: isfollowing,
 		};
-		return res.status(200).json({
+		console.log(data.isfollowing);
+		return res.render('users/showActor', {
 			details: data,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		console.log(err.message);
@@ -71,9 +76,9 @@ ActorRouter.get('/all', async (req, res) => {
 				name: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			}).populate('movies');
 		} else {
-			actorObjects = await ActorModel.find();
+			actorObjects = await ActorModel.find().populate('movies');
 		}
 
 		if (!actorObjects) {
@@ -83,16 +88,17 @@ ActorRouter.get('/all', async (req, res) => {
 		}
 
 		let actors = [];
-		let isfollowing = false;
+		let isfollowing;
 		for (const x of actorObjects) {
 			isfollowing = false;
 			for (const y of userObj.followingActors) {
-				if (y.id === x._id) {
+				if (y._id.equals(x._id)) {
 					isfollowing = true;
 					break;
 				}
 			}
 			actors.push({
+				id: x._id,
 				name: x.name,
 				bio: x.bio,
 				age: x.age,
@@ -100,10 +106,12 @@ ActorRouter.get('/all', async (req, res) => {
 				movies: x.movies,
 				isfollowing: isfollowing,
 			});
+			console.log(isfollowing);
 		}
 
-		return res.status(200).json({
+		return res.render('users/actor', {
 			details: actors,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		console.log(err.message);

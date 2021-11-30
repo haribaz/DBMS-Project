@@ -4,7 +4,7 @@
 <% details.forEach((genre) => { %>
     <div class="d-flex justify-content-between">
         <h3><%= genre.name %></h3>
-        <form  method="post">
+        <form action="/api/user/follow/genre/<%= genre.id %>/isFollow?_method=PUT" method="post">
             <button type="submit" class="follow-button btn btn-primary">
                 Unfollow
             </button>
@@ -14,7 +14,7 @@
     <div class="grid-container-small">
         <% genre.movies.forEach((movie) => { %>
             <div>
-                <a href="/api/user/movie/<%= movie.id %>"><img class="director-movie movie-cover" src="/api/images/<%= movie.coverImage %>"></a>
+                <a href="/api/user/movie/show/<%= movie.id %>"><img class="director-movie movie-cover" src="/api/images/<%= movie.coverImage %>"></a>
             </div>
         <% }) %>
     </div>

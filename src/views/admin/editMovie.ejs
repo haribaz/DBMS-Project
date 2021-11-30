@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col form-item-movie">
                 <label>Date</label>
-                <input  class="form-select form-input-movie" name="releaseDate" value="<%= details.releaseDate %>" type="date">
+                <input  class="form-select form-input-movie" name="releaseDate" value="<%= details.releaseDate.toISOString().split('T')[0] %>" type="date">
             </div>
             <div class="col form-item-movie">
                 <label>Cast</label>
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col form-item-movie">
                 <label class="form-label">Description</label>
-                <textarea class="form-control form-input-movie" name="description" value="<%= details.description %>" rows="3"></textarea>
+                <textarea class="form-control form-input-movie" name="description" placeholder="<%= details.description %>" rows="3"></textarea>
             </div>
         </div>
         <div class="row">
@@ -41,7 +41,7 @@
             <div class="col form-item-movie">
                 <label>Genre</label>
                 <select  class="form-select form-input-movie" name="genre" disabled>
-                    <option value="<%= details.genre %>" selected><%= details.genre %></option>
+                    <option value="<%= details.genre.name %>" selected><%= details.genre.name %></option>
                 </select>
             </div>
             <div class="col form-item-movie">

@@ -28,7 +28,7 @@ AuthRouter.post('/login', async (req, res) => {
 				if (await bcrypt.compare(password, user.password)) {
 					const token = await createUserJWT(user);
 					res.cookie('token', token);
-					return res.redirect('/api/user/movie/all');
+					return res.redirect('/api/user/movie/home');
 				}
 				return res.status(401).json({
 					message: 'Incorrect username and password',
@@ -70,6 +70,7 @@ AuthRouter.get('/register', async (req, res) => {
 
 AuthRouter.post('/register', async (req, res) => {
 	try {
+		console.log(req.body);
 		const { email, name, password, cpassword, isAdm } = req.body;
 		if (!email || !name || !password || !cpassword || !isAdm) {
 			return res.status(400).json({
@@ -108,10 +109,8 @@ AuthRouter.post('/register', async (req, res) => {
 			});
 			if (newUser) {
 				const token = await createUserJWT(newUser);
-				return res.status(200).json({
-					message: 'Success',
-					token,
-				});
+				res.cookie('token', token);
+				return res.redirect('/api/user/movie/home');
 			}
 		} else {
 			if (await AdminModel.findOne({ email: email }))
@@ -145,10 +144,8 @@ AuthRouter.post('/register', async (req, res) => {
 			});
 			if (newUser) {
 				const token = await createAdminJWT(newUser);
-				return res.status(200).json({
-					message: 'Success',
-					token,
-				});
+				res.cookie('token', token);
+				return res.redirect('/api/admin/movie/all');
 			}
 		}
 	} catch (err) {

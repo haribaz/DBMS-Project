@@ -36,7 +36,7 @@
     <h2>Movies by Actor</h2>
     <div class="grid-container-small">
        <% details.movies.forEach((movie) => { %>
-         <a href="/api/admin/movie/<%= movie.id %>"><img class="director-movie movie-cover-small" src="/api/images/<%= movie.coverImage %>"></a>
+         <a href="/api/admin/movie/show/<%= movie.id %>"><img class="director-movie movie-cover-small" src="/api/images/<%= movie.coverImage %>"></a>
        <% }) %>
     </div>
  </div>

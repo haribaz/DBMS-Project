@@ -4,6 +4,10 @@ const DirectorModel = require('../../../database/models/director');
 const { uploadImg } = require('../../../middleware/multer');
 // const { verifyAdminJWT } = require('../../middleware/jwt');
 
+DirectorRouter.get('/add', async (req, res) => {
+	res.render('admin/addDirector', { layout: 'layouts/admin' });
+});
+
 DirectorRouter.post(
 	'/add',
 	uploadImg.fields([
@@ -34,9 +38,7 @@ DirectorRouter.post(
 			});
 
 			if (newDirector) {
-				return res.status(200).json({
-					message: 'Success',
-				});
+				res.redirect('/api/admin/director/show/' + newDirector._id);
 			}
 		} catch (err) {
 			console.log(err.message);
@@ -51,7 +53,7 @@ DirectorRouter.get('/show/:id', async (req, res) => {
 	try {
 		const id = req.params.id;
 
-		const director = await DirectorModel.findById(id);
+		const director = await DirectorModel.findById(id).populate('movies');
 
 		if (!director) {
 			return res.status(404).json({
@@ -60,12 +62,14 @@ DirectorRouter.get('/show/:id', async (req, res) => {
 		}
 
 		const data = {
+			id: director._id,
 			name: director.name,
 			bio: director.bio,
 			coverImage: director.coverImage,
 			movies: director.movies,
 		};
-		return res.status(200).json({
+		res.render('admin/showDirector', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -89,13 +93,15 @@ DirectorRouter.get('/edit/:id', async (req, res) => {
 		}
 
 		const data = {
+			id: director._id,
 			name: director.name,
 			bio: director.bio,
 			age: director.age,
 			coverImage: director.coverImage,
 			movies: director.movies,
 		};
-		return res.status(200).json({
+		res.render('admin/editDirector', {
+			layout: 'layouts/admin',
 			details: data,
 		});
 	} catch (err) {
@@ -136,9 +142,7 @@ DirectorRouter.put(
 
 			await director.save();
 
-			return res.status(200).json({
-				message: 'Director details updated successfully',
-			});
+			return res.redirect('/api/admin/director/show/' + id);
 		} catch (err) {
 			console.log(err.message);
 			return res.status(500).json({
@@ -160,9 +164,9 @@ DirectorRouter.get('/all', async (req, res) => {
 				name: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			}).populate('movies');
 		} else {
-			directorObjects = await DirectorModel.find();
+			directorObjects = await DirectorModel.find().populate('movies');
 		}
 
 		if (!directorObjects) {
@@ -171,7 +175,8 @@ DirectorRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		return res.render('admin/director', {
+			layout: 'layouts/admin',
 			details: directorObjects,
 		});
 	} catch (err) {
@@ -198,10 +203,10 @@ DirectorRouter.delete('/delete/:id', async (req, res) => {
 				});
 			} else {
 				try {
-					const result = DirectorModel.findByIdAndDelete(dirObj._id);
-					return res.status(200).json({
-						message: 'Director Deleted',
-					});
+					const result = await DirectorModel.findByIdAndDelete(
+						dirObj._id
+					);
+					return res.redirect('/api/admin/director/all');
 				} catch (err) {
 					return res.status(400).json({
 						message: err.message,

@@ -7,11 +7,14 @@ const DirectorModel = require('../../../database/models/director');
 const ActorModel = require('../../../database/models/actor');
 const GenreModel = require('../../../database/models/genre');
 
-MovieRouter.get('/title/:title', async (req, res) => {
+MovieRouter.get('/show/:id', async (req, res) => {
 	try {
-		const title = req.params.title;
+		const id = req.params.id;
 
-		const movie = await MovieModel.findOne({ title: title });
+		const movie = await MovieModel.findById(id)
+			.populate('director')
+			.populate('cast')
+			.populate('genre');
 
 		if (!movie) {
 			return res.status(404).json({
@@ -20,17 +23,20 @@ MovieRouter.get('/title/:title', async (req, res) => {
 		}
 
 		const data = {
+			id: movie._id,
 			title: movie.title,
 			description: movie.description,
 			releaseDate: movie.releaseDate,
+			genre: movie.genre,
 			runtime: movie.runtime,
 			createdAt: movie.createdAt,
 			director: movie.director,
 			cast: movie.cast,
 			coverImage: movie.coverImage,
 		};
-		return res.status(200).json({
+		return res.render('users/showMovie', {
 			details: data,
+			layout: 'layouts/user',
 		});
 	} catch (err) {
 		console.log(err.message);
@@ -103,7 +109,15 @@ MovieRouter.get('/home', async (req, res) => {
 	try {
 		const id = req.jwt_payload.id;
 		// console.log(req.jwt_payload.email);
-		const allMovies = await MovieModel.find().sort({ _id: -1 });
+		const genreList = await GenreModel.find({});
+		const actorList = await ActorModel.find({});
+		const directorList = await DirectorModel.find({});
+
+		const allMovies = await MovieModel.find()
+			.sort({ _id: -1 })
+			.populate('director')
+			.populate('cast')
+			.populate('genre');
 
 		if (!allMovies) {
 			return res.status(404).json({
@@ -192,8 +206,12 @@ MovieRouter.get('/home', async (req, res) => {
 			temp2.some((b) => a._id.equals(b))
 		);
 
-		return res.status(200).json({
+		return res.render('users/home', {
 			details: suggestedMovies,
+			genres: genreList,
+			actors: actorList,
+			directors: directorList,
+			layout: 'layouts/userHome',
 		});
 	} catch (err) {
 		console.log(err.message);

@@ -1,12 +1,22 @@
 const DirectorRouter = require('express').Router();
 
 const DirectorModel = require('../../../database/models/director');
+const UserModel = require('../../../database/models/user');
 
-DirectorRouter.get('/name/:name', async (req, res) => {
+DirectorRouter.get('/show/:dirId', async (req, res) => {
 	try {
-		const name = req.params.name;
+		const dirId = req.params.dirId;
+		const { id } = req.jwt_payload;
 
-		const director = await DirectorModel.findOne({ name: name });
+		const userObj = await UserModel.findById(id);
+
+		if (!userObj) {
+			return res.status(400).json({
+				message: 'User not found',
+			});
+		}
+
+		const director = await DirectorModel.findById(dirId);
 
 		if (!director) {
 			return res.status(404).json({
@@ -14,11 +24,21 @@ DirectorRouter.get('/name/:name', async (req, res) => {
 			});
 		}
 
+		let isfollowing;
+		for (x in userObj.followingDirectors) {
+			isfollowing = false;
+			if (x._id === dirId) {
+				isfollowing = true;
+				break;
+			}
+		}
+
 		const data = {
 			name: director.name,
 			bio: director.bio,
 			coverImage: director.coverImage,
 			movies: director.movies,
+			isfollowing: isfollowing,
 		};
 		return res.status(200).json({
 			details: data,
@@ -34,6 +54,15 @@ DirectorRouter.get('/name/:name', async (req, res) => {
 DirectorRouter.get('/all', async (req, res) => {
 	try {
 		const name = req.query.title;
+		const { id } = req.jwt_payload;
+
+		const userObj = await UserModel.findById(id);
+
+		if (!userObj) {
+			return res.status(400).json({
+				message: 'User not found',
+			});
+		}
 
 		let directorObjects;
 		if (name) {
@@ -52,8 +81,28 @@ DirectorRouter.get('/all', async (req, res) => {
 			});
 		}
 
+		let directors = [];
+		let isfollowing = false;
+		for (const x of directorObjects) {
+			isfollowing = false;
+			for (const y of userObj.followingDirectors) {
+				if (y.id === x._id) {
+					isfollowing = true;
+					break;
+				}
+			}
+			directors.push({
+				name: x.name,
+				bio: x.bio,
+				age: x.age,
+				coverImage: x.coverImage,
+				movies: x.movies,
+				isfollowing: isfollowing,
+			});
+		}
+
 		return res.status(200).json({
-			details: directorObjects,
+			details: directors,
 		});
 	} catch (err) {
 		console.log(err.message);

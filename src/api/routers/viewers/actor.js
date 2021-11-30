@@ -34,7 +34,18 @@ ActorRouter.get('/name/:name', async (req, res) => {
 
 ActorRouter.get('/all', async (req, res) => {
 	try {
-		const actorObjects = await ActorModel.find();
+		const name = req.query.title;
+
+		let actorObjects;
+		if (name) {
+			actorObjects = await ActorModel.find({
+				name: {
+					$regex: new RegExp(name, 'i'),
+				},
+			});
+		} else {
+			actorObjects = await ActorModel.find();
+		}
 
 		if (!actorObjects) {
 			return res.status(403).json({

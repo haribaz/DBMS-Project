@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+    <table class="mt-5 top-movie-table">
+        <thead class="top-movie-header">
+            <tr>
+                <th class="table-top-header">S.No</th>
+                <th class="table-top-header">Cover</th>
+                <th class="table-top-header">Movie</th>
+                <th class="table-top-header">Rating</th>
+            </tr>
+        </thead>
+        <tbody class="top-movie-body">
+            <% for(let i=0; i<details.length; i++) {%>
+            <tr>
+                <td class="table-cell-top">
+                    <%= (pageNo-1)*10+(i+1) %>
+                </td>
+                <td class="table-cell-top">
+                    <img class="movie-cover-small-alt topMovie-img" src="/api/images/<%= details[i].coverImage %>">
+                </td>
+                <td class="table-cell-top">
+                        <%= details[i].title %>
+                </td>
+                <td class="table-cell-top">
+                     <%= details[i].avgRating.value %>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-5 d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a style="background-color: rgb(41, 129, 180)" class="page-link" href="/api/user/movie/top/1" aria-label="Previous">
+              <span style="color: white" aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <% for(let i=1; i <= pageCount; i++) { %>
+            <li class="page-item"><a style="background-color: aliceblue;" class="page-link" href="/api/user/movie/top/<%= i %>"><%= i %></a></li>
+          <% } %>
+            <a style="background-color: rgb(41, 129, 180)" class="page-link" href="/api/user/movie/top/<%= pageCount %>" aria-label="Next">
+              <span style="color: white" aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+    </nav>
+</div>
+

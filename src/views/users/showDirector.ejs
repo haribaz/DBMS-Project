@@ -1,0 +1,45 @@
+<div class="mt-5 d-flex justify-content-evenly">
+    <div>
+       <img class="movie-cover" src="/api/images/<%= details.coverImage %>">
+       <div class="mt-3 justify-content-center d-flex">
+         <form action="/api/user/follow/director/<%= details.id %>/isNotAll?_method=PUT" method="post">
+            <button type="submit" class="follow-button btn btn-primary <% if (details.isfollowing) { %> following <% } %>">
+               <% if (details.isfollowing) { %>
+                  Following
+               <% } else { %>
+                   Follow
+               <% } %>
+            </button>
+         </form>
+       </div>
+    </div>
+    <div class="movie-details-grid align-self-center">
+       <table class="movie-details-table">
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Name</div></td>
+             <td  class="table-cell"><div><%= details.name %></div></td>
+          </tr>
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Movie Count</div></td>
+             <td class="table-cell"><div><%= details.movies.length %></div></td>
+ 
+          </tr>
+          <tr>
+             <td class="table-cell-alt"><div class="movie-details-label">Bio</div></td>
+             <td class="table-cell"><div><%= details.bio %></div></td>
+ 
+          </tr>
+       </table>
+    </div>
+ </div>
+
+ <hr class="mt-5 mb-5">
+
+ <div>
+    <h2>Movies by Director</h2>
+    <div class="grid-container-small">
+       <% details.movies.forEach((movie) => { %>
+         <a href="/api/user/movie/show/<%= movie.id %>"><img class="director-movie movie-cover-small" src="/api/images/<%= movie.coverImage %>"></a>
+       <% }) %>
+    </div>
+ </div>

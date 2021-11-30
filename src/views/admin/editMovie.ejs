@@ -1,0 +1,57 @@
+<div class="form-container">
+    <h2> Edit Movie</h2>
+    <form method="post" action="/api/admin/movie/edit/<%= details.id %>?_method=PUT" enctype="multipart/form-data" class="mt-5">
+        <div class="row">
+            <div class="form-item-movie col">
+                    <label>Title</label>
+                    <input class="form-control form-input-movie" type="text" name="title" value="<%= details.title %>" placeholder="Title">
+            </div>
+            <div class="col form-item-movie">
+                <label>Director</label>
+                <select  class="form-select form-input-movie" name="director" disabled>
+                    <option value="<%= details.director.name %>" selected><%= details.director.name %></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Date</label>
+                <input  class="form-select form-input-movie" name="releaseDate" value="<%= details.releaseDate.toISOString().split('T')[0] %>" type="date">
+            </div>
+            <div class="col form-item-movie">
+                <label>Cast</label>
+                <select  class="form-control form-input-movie mselect" name="cast" multiple disabled>
+                    <% for(let i = 0; i < details.cast.length; i++) { %>
+                        <option value="<%= details.cast[i].name %>" selected><%= details.cast[i].name %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label class="form-label">Description</label>
+                <textarea class="form-control form-input-movie" name="description" placeholder="<%= details.description %>" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Cover Image</label>
+                <input type="file" class="form-control form-input-movie" name="coverImage">
+            </div>
+            <div class="col form-item-movie">
+                <label>Genre</label>
+                <select  class="form-select form-input-movie" name="genre" disabled>
+                    <option value="<%= details.genre.name %>" selected><%= details.genre.name %></option>
+                </select>
+            </div>
+            <div class="col form-item-movie">
+                <label>Runtime</label>
+                <input type="number" class="form-control form-input-movie" value="<%= details.runtime %>" name="runtime">
+            </div>
+        </div>
+        
+        <div class="d-flex flex-row-reverse">
+            <button type="submit" class="form-item-movie btn btn-primary">Edit</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,22 @@
+.fixed-button {
+    position: fixed;
+    background: rgb(94, 250, 94);
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    bottom: 5%;
+    right: 5%;
+    border: none;
+}
+
+.plus-sign {
+    font-size: 20px;
+    color: black;
+    position: absolute;
+    left: 16px;
+    top: 14px;
+}
+
+.fixed-button:hover {
+    background: rgb(48, 150, 48);
+}

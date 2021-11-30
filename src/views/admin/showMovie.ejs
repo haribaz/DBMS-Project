@@ -1,0 +1,111 @@
+<div class="mt-5 d-flex justify-content-evenly">
+   <div>
+      <img class="movie-cover" src="/api/images/<%= details.coverImage %>">
+      <div class="mt-3 btn-row-movie d-flex">
+         <button type="button" class="btn-movie btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Delete
+          </button>
+         <a href="/api/admin/movie/edit/<%= details.id %>" class="btn-movie btn btn-primary">
+            Edit
+         </a>
+      </div>
+   </div>
+   <div class="movie-details-grid">
+      <table class="movie-details-table">
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Title</div></td>
+            <td  class="table-cell"><div><%= details.title %></div></td>
+         </tr>
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Release Date</div></td>
+            <td class="table-cell"><div><%= details.releaseDate.toISOString().split('T')[0] %></div></td>
+
+         </tr>
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Runtime</div></td>
+            <td class="table-cell"><div><%= details.runtime %></div></td>
+         </tr>
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Genre</div></td>
+            <td class="table-cell"><div><%= details.genre.name %></div></td>
+         </tr>
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Description</div></td>
+            <td class="table-cell"><div><%= details.description %></div></td>
+
+         </tr>
+         <tr>
+            <td class="table-cell-alt"><div class="movie-details-label">Rating</div></td>
+            <td class="table-cell"><div><%= details.avgRating.value %></div></td>
+         </tr>
+      </table>
+   </div>
+</div>
+<hr class="mt-5 mb-5">
+
+<!-- cast carousel -->
+<div class="d-flex cast-director justify-content-around">
+   <div style="margin-right: 7rem;">
+      <h2>Cast</h2>
+      <div class="carousel-movie">
+         <div id="carouselCast" class="carousel slide mt-4" data-bs-ride="carousel">
+            
+            <div class="carousel-inner">
+               <% for (let i = 0; i < details.cast.length; i++) { %>
+                  <div class="carousel-item <% if (i === 0) { %> active <% } %>">
+                     <a href="/api/admin/actor/show/<%= details.cast[i].id %>"><img src="/api/images/<%= details.cast[i].coverImage %>" class="d-block movie-cover" alt="..."></a>
+                  </div>
+               <% } %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselCast" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselCast" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+      </div>
+   </div>
+   <div>
+      <h2>Director</h2>
+      <a href="/api/admin/director/show/<%= details.director.id %>"><img class="mt-4 movie-cover" src="/api/images/<%= details.director.coverImage %>"></a>
+   </div>
+</div>
+<hr class="mt-5 mb-5">
+
+<!-- reviews -->
+<h2>Reviews</h2>
+<ul class="mt-3 list-group">
+   <% for (let i = 0; i < details.reviews.length; i++) { %>
+     <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+           <div class="fw-bold"><%= details.reviews[i].name %></div>
+           <div><%= details.reviews[i].review %></div>
+        </div>
+        <span class="badge bg-primary rounded-pill"><%= details.reviews[i].rating %></span>
+     </li>
+  <% } %>
+</ul>
+
+<!-- delete modal -->
+<div style="color: var(--color-background-dark)" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Delete Movie</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         Are you sure you want to delete this movie?
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+         <form action="/api/admin/movie/delete/<%= details.id %>?_method=DELETE" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>

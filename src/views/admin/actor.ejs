@@ -1,0 +1,38 @@
+<form method="GET" class="d-flex">
+	<input class="form-control" type="text" style="margin-right: 1rem; background-color: var(--color-text-light);" name="title" placeholder="Search Actor">
+	<button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<div class="grid-container">
+	<% details.forEach((actor) => { %>
+	<div class="movie-card card">
+		<img
+			src="/api/images/<%= actor.coverImage %>"
+			class="card-img-top image-card"
+			alt="..."
+		/>
+		<div class="text-center card-body">
+			<h5 class="card-title movie-title"><%= actor.name %></h5>
+			<div class="movie-btn-grid">
+				<button
+					class="btn btn-primary"
+					data-bs-toggle="collapse"
+					data-bs-target="#collapse<%= actor.id %>"
+				>
+					See More
+				</button>
+				<a href="/api/admin/actor/show/<%= actor.id %>" class="btn btn-primary">Actor Page</a>
+			</div>
+			<div class="collapse text-primary mt-3" id="collapse<%= actor.id %>">
+				<div class="card-body">
+					Age: <%= actor.age %>
+					<br>
+					Best Movie: <%= actor.bestMovie %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% }) %>
+</div>
+
+<a class="fixed-button btn" href="/api/admin/actor/add"><i class="plus-sign fas fa-plus"></i></a>

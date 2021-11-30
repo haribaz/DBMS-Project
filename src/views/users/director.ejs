@@ -1,0 +1,35 @@
+<h1 style="text-align: center;">Directors</h1>
+<br>
+<form method="GET" class="d-flex">
+	<input class="form-control" type="text" style="margin-right: 1rem; background-color: var(--color-text-light);" name="title" placeholder="Search Director">
+	<button class="btn btn-primary" type="submit">Search</button>
+</form>
+<br>
+
+<div class="grid-container">
+	<% details.forEach((director) => { %>
+	<div class="movie-card card">
+		<img
+			src="/api/images/<%= director.coverImage %>"
+			class="card-img-top image-card"
+			alt="..."
+		/>
+		<div class="text-center card-body">
+			<h5 class="card-title movie-title"><%= director.name %></h5>
+			<div class="follow-grid">
+				<form action="/api/user/follow/director/<%= director.id %>/isAll?_method=PUT" method="post">
+					<button type="submit" class="follow-button btn btn-primary <% if (director.isfollowing) { %> following <% } %>">
+						<% if (director.isfollowing) { %>
+							Following
+						<% } else { %>
+						    Follow
+						<% } %>
+					</button>
+				</form>
+				<a href="/api/user/director/show/<%= director.id %>" class="btn btn-primary">Director Page</a>
+			</div>
+		</div>
+	</div>
+	<% }) %>
+</div>
+

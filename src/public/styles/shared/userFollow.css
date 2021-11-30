@@ -1,0 +1,12 @@
+.follow-grid {
+	display: flex;
+	justify-content: space-around;
+}
+
+.follow-button {
+	width: 115px;
+}
+
+.following {
+	background-color: rgb(80, 219, 80);
+}

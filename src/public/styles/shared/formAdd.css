@@ -1,0 +1,8 @@
+.form-input-movie {
+	background-color: var(--color-text-light);
+	padding: 0.5rem;
+}
+
+.form-item-movie {
+	margin: 0.5rem;
+}

@@ -1,0 +1,29 @@
+.top-movie-table {
+	border-collapse: collapse;
+	max-width: 800px;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 20px black;
+}
+
+.table-cell-top {
+	background-color: rgb(78, 100, 120);
+	padding: 12px 15px;
+	width: 200px;
+	text-align: center;
+	border-top: 1px solid white;
+}
+
+.top-movie-header {
+	background-color: rgb(41, 129, 180);
+	border-bottom: 2px solid rgb(41, 129, 180);
+}
+
+.top-movie-body tr:last-child {
+	border-bottom: none;
+}
+
+.table-top-header {
+	text-align: center;
+	padding: 5px 5px;
+}

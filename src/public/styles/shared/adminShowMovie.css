@@ -1,0 +1,111 @@
+:root {
+	--movie-cover-width: 200px;
+	--movie-cover-width-small-alt: 75px;
+	--movie-cover-width-small: 175px;
+	--movie-cover-width-large: 250px;
+	--movie-cover-aspect-ratio: 0.75;
+}
+.image-card {
+	object-fit: cover;
+	width: 300px;
+	height: 300px;
+}
+.movie-cover-small-alt {
+	width: var(--movie-cover-width-small-alt);
+	height: calc(
+		var(--movie-cover-width-small-alt) / var(--movie-cover-aspect-ratio)
+	);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-cover-small {
+	width: var(--movie-cover-width-small);
+	height: calc(
+		var(--movie-cover-width-small) / var(--movie-cover-aspect-ratio)
+	);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-cover {
+	width: var(--movie-cover-width);
+	height: calc(var(--movie-cover-width) / var(--movie-cover-aspect-ratio));
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-cover-large {
+	width: var(--movie-cover-width-large);
+	height: calc(
+		var(--movie-cover-width-large) / var(--movie-cover-aspect-ratio)
+	);
+}
+
+.btn-movie {
+	border: 1px solid var(--color-btn-border);
+	border-radius: 0.5rem;
+	padding: 0.5rem 1.2rem;
+	font-size: 1.2rem;
+}
+
+.btn-row-movie {
+	display: flex;
+	align-items: flex-start;
+}
+
+.btn-row-movie > * {
+	margin-left: 1rem;
+}
+
+.btn-row-movie > *:first-child {
+	margin-left: 0;
+}
+
+/* .movie-details-grid {
+	display: grid;
+	align-content: flex-start;
+	align-items: center;
+	grid-gap: 1rem;
+	grid-template-columns: 200px 200px;
+} */
+
+.movie-details-table {
+	border-collapse: collapse;
+	min-width: 400px;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 20px black;
+}
+
+.movie-details-table tr {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.movie-details-table tr:last-child {
+	border-bottom: none;
+}
+
+.table-cell {
+	background-color: rgb(78, 100, 120);
+	padding: 12px 15px;
+	max-width: 500px;
+}
+
+.table-cell-alt {
+	background-color: rgb(41, 129, 180);
+	padding: 12px 15px;
+}
+
+.carousel-movie {
+	width: 200px;
+}
+
+.movie-details-label {
+	font-size: 1.2rem;
+	font-weight: 500;
+}
+
+.director-movie {
+	border-radius: 20px;
+}
+.director-movie:hover {
+	border: 3px solid black;
+}

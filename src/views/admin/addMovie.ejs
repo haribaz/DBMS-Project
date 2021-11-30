@@ -1,0 +1,61 @@
+<div class="form-container">
+    <h2> Add a New Movie</h2>
+    <form method="post" action="/api/admin/movie/add" enctype="multipart/form-data" class="mt-5">
+        <div class="row">
+            <div class="form-item-movie col">
+                    <label>Title</label>
+                    <input class="form-control form-input-movie" type="text" name="title" placeholder="Title">
+            </div>
+            <div class="col form-item-movie">
+                <label>Director</label>
+                <select  class="form-select form-input-movie" name="director">
+                    <% details.directors.forEach((director) => { %>
+                        <option value="<%= director.name %>"><%= director.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Date</label>
+                <input  class="form-select form-input-movie" name="releaseDate" type="date">
+            </div>
+            <div class="col form-item-movie">
+                <label>Cast</label>
+                <select  class="form-control form-input-movie mselect" name="cast" multiple>
+                    <% details.actors.forEach((actor) => { %>
+                        <option value="<%= actor.name %>"><%= actor.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label class="form-label">Description</label>
+                <textarea class="form-control form-input-movie" name="description" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-item-movie">
+                <label>Cover Image</label>
+                <input type="file" class="form-control form-input-movie" name="coverImg">
+            </div>
+            <div class="col form-item-movie">
+                <label>Genre</label>
+                <select  class="form-select form-input-movie" name="genreName">
+                    <% details.genres.forEach((genre) => { %>
+                        <option value="<%= genre.name %>"><%= genre.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col form-item-movie">
+                <label>Runtime</label>
+                <input type="number" class="form-control form-input-movie" name="runtime">
+            </div>
+        </div>
+        
+        <div class="d-flex flex-row-reverse">
+            <button type="submit" class="form-item-movie btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>

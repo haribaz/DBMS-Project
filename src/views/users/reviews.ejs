@@ -1,0 +1,17 @@
+<% details.forEach((review) => {%>
+    <div class="card mt-5" style="box-shadow: 0 0 20px black; color: var(--color-background-light)">
+        <div class="row g-0">
+          <div class="col-md-2">
+            <img src="/api/images/<%= review.movieId.coverImage %>" style="height: 170px" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <div style="font-size:1.25rem; font-weight: 600;">Review</div>
+              <p class="card-text"><%= review.review %></p>
+              <div style="font-size:1.2rem; font-weight: 600;">Rating</div>
+              <p class="card-text"><%= review.rating %></p>
+            </div>
+          </div>
+        </div>
+    </div>
+<% }) %>

@@ -1,0 +1,35 @@
+<h1 style="text-align: center;">Genres</h1>
+
+<div class="mt-5 accordion .accordion-flush" id="accordionExample">
+    <% details.forEach((genre) => { %>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading<%= genre.id %>">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= genre.id %>">
+            <%= genre.name %>
+          </button>
+        </h2>
+        <div id="collapse<%= genre.id %>" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-center">
+              <form action="/api/user/follow/genre/<%= genre.id %>/isAll?_method=PUT" method="post">
+                <button type="submit" class="follow-button btn btn-primary <% if (genre.isfollowing) { %> following <% } %>">
+                  <% if (genre.isfollowing) { %>
+                    Following
+                  <% } else { %>
+                      Follow
+                  <% } %>
+                </button>
+              </form>
+            </div>
+            <div class="grid-container-small">
+              <% genre.movies.forEach((movie) => { %>
+                <a href="/api/user/movie/show/<%= movie.id %>"><img class="director-movie movie-cover-small" src="/api/images/<%= movie.coverImage %>"></a>
+              <% }) %>
+            </div>
+         </div>
+        </div>
+      </div>
+    <% }) %>
+</div>
+
+

@@ -312,9 +312,15 @@ MovieRouter.get('/all', async (req, res) => {
 				title: {
 					$regex: new RegExp(name, 'i'),
 				},
-			});
+			})
+				.populate('director')
+				.populate('genre')
+				.populate('cast');
 		} else {
-			movieObjects = await MovieModel.find();
+			movieObjects = await MovieModel.find()
+				.populate('director')
+				.populate('genre')
+				.populate('cast');
 		}
 
 		if (!movieObjects) {
@@ -323,7 +329,8 @@ MovieRouter.get('/all', async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({
+		return res.render('admin/movie', {
+			layout: 'layouts/admin',
 			details: movieObjects,
 		});
 	} catch (err) {

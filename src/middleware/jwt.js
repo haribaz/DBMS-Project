@@ -33,7 +33,7 @@ const createAdminJWT = async (user) => {
 
 const verifyUserJWT = (req, res, next) => {
 	try {
-		const { token } = req.headers;
+		const { token } = req.cookies;
 		if (!token) {
 			return res.status(401).json({ message: 'No token' });
 		}
@@ -63,7 +63,7 @@ const verifyUserJWT = (req, res, next) => {
 
 const verifyAdminJWT = (req, res, next) => {
 	try {
-		const { token } = req.headers;
+		const { token } = req.cookies;
 		if (!token) {
 			return res.status(401).json({ message: 'No token' });
 		}

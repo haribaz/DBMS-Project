@@ -61,12 +61,12 @@ DirectorRouter.get('/show/:id', async (req, res) => {
 			});
 		}
 
-		let x;
+		// let x;
 
-		if (!director.movies) {
-			x = director.movies;
-			x.sort((a, b) => (a.avgRating.value < b.avgRating.value ? 1 : -1));
-		}
+		// if (!director.movies) {
+		// 	x = director.movies;
+		// 	x.sort((a, b) => (a.avgRating.value < b.avgRating.value ? 1 : -1));
+		// }
 		// console.log(x);
 
 		const data = {
@@ -75,7 +75,7 @@ DirectorRouter.get('/show/:id', async (req, res) => {
 			bio: director.bio,
 			coverImage: director.coverImage,
 			movies: director.movies,
-			bestMovie: x[0],
+			// bestMovie: x[0],
 		};
 		// console.log(data);
 
@@ -186,9 +186,34 @@ DirectorRouter.get('/all', async (req, res) => {
 			});
 		}
 
+		const directors = [];
+		let best;
+
+		for (const dir of directorObjects) {
+			let x;
+			if (dir.movies && dir.movies.length != 0) {
+				x = dir.movies;
+				x.sort((a, b) =>
+					a.avgRating.value < b.avgRating.value ? 1 : -1
+				);
+				best = x[0].title;
+			} else {
+				best = ' - ';
+			}
+			const data = {
+				id: dir._id,
+				name: dir.name,
+				bio: dir.bio,
+				coverImage: dir.coverImage,
+				movies: dir.movies,
+				bestMovie: best,
+			};
+			directors.push(data);
+		}
+
 		return res.render('admin/director', {
 			layout: 'layouts/admin',
-			details: directorObjects,
+			details: directors,
 		});
 	} catch (err) {
 		console.log(err.message);

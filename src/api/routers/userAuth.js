@@ -17,7 +17,7 @@ AuthRouter.post('/login', async (req, res) => {
 			});
 		}
 
-		if (!isAdm) {
+		if (isAdm != 'true') {
 			const user = await UserModel.findOne({ email: email });
 			// if user exists
 			if (user) {

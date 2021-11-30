@@ -47,7 +47,7 @@ const verifyUserJWT = (req, res, next) => {
 					.json({ message: 'Invalid token or Token expired' });
 			}
 
-			console.log(decoded.isAdmin);
+			// console.log(decoded.isAdmin);
 
 			if (isNaN(decoded.email) && decoded.isAdmin)
 				return res.status(400).json({ message: 'Invalid token' });

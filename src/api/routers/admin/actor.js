@@ -134,6 +134,13 @@ ActorRouter.get('/show/:id', async (req, res) => {
 			});
 		}
 
+		let x;
+
+		if (!actor.movies) {
+			x = actor.movies;
+			x.sort((a, b) => (a.avgRating.value < b.avgRating.value ? 1 : -1));
+		}
+
 		const data = {
 			id: actor._id,
 			name: actor.name,
@@ -141,6 +148,7 @@ ActorRouter.get('/show/:id', async (req, res) => {
 			age: actor.age,
 			coverImage: actor.coverImage,
 			movies: actor.movies,
+			bestMovie: x[0],
 		};
 		res.render('admin/showActor', {
 			layout: 'layouts/admin',

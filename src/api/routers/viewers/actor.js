@@ -1,17 +1,36 @@
 const ActorRouter = require('express').Router();
 
 const ActorModel = require('../../../database/models/actor');
+const UserModel = require('../../../database/models/user');
 
-ActorRouter.get('/name/:name', async (req, res) => {
+ActorRouter.get('/show/:actorId', async (req, res) => {
 	try {
-		const name = req.params.name;
+		const actorId = req.params.actorId;
+		const { id } = req.jwt_payload;
 
-		const actor = await ActorModel.findOne({ name: name });
+		const userObj = await UserModel.findById(id);
+
+		if (!userObj) {
+			return res.status(400).json({
+				message: 'User not found',
+			});
+		}
+
+		const actor = await ActorModel.findById(actorId);
 
 		if (!actor) {
 			return res.status(404).json({
 				message: 'Actor not found',
 			});
+		}
+
+		let isfollowing;
+		for (x in userObj.followingActors) {
+			isfollowing = false;
+			if (x._id === actorId) {
+				isfollowing = true;
+				break;
+			}
 		}
 
 		const data = {
@@ -20,6 +39,7 @@ ActorRouter.get('/name/:name', async (req, res) => {
 			age: actor.age,
 			coverImage: actor.coverImage,
 			movies: actor.movies,
+			isfollowing: isfollowing,
 		};
 		return res.status(200).json({
 			details: data,
@@ -35,6 +55,15 @@ ActorRouter.get('/name/:name', async (req, res) => {
 ActorRouter.get('/all', async (req, res) => {
 	try {
 		const name = req.query.title;
+		const { id } = req.jwt_payload;
+
+		const userObj = await UserModel.findById(id);
+
+		if (!userObj) {
+			return res.status(400).json({
+				message: 'User not found',
+			});
+		}
 
 		let actorObjects;
 		if (name) {
@@ -53,8 +82,28 @@ ActorRouter.get('/all', async (req, res) => {
 			});
 		}
 
+		let actors = [];
+		let isfollowing = false;
+		for (const x of actorObjects) {
+			isfollowing = false;
+			for (const y of userObj.followingActors) {
+				if (y.id === x._id) {
+					isfollowing = true;
+					break;
+				}
+			}
+			actors.push({
+				name: x.name,
+				bio: x.bio,
+				age: x.age,
+				coverImage: x.coverImage,
+				movies: x.movies,
+				isfollowing: isfollowing,
+			});
+		}
+
 		return res.status(200).json({
-			details: actorObjects,
+			details: actors,
 		});
 	} catch (err) {
 		console.log(err.message);

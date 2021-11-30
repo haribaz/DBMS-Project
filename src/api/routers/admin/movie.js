@@ -12,7 +12,7 @@ MovieRouter.get('/add', async (req, res) => {
 	const directors = await DirectorModel.find({});
 	const actors = await ActorModel.find({});
 	const genres = await GenreModel.find({});
-	console.log(directors);
+	// console.log(directors);
 	data = {
 		directors,
 		actors,
@@ -78,11 +78,18 @@ MovieRouter.post(
 					message: 'Genre does not exist',
 				});
 
-			for (const element of cast) {
-				if (!(await ActorModel.findOne({ name: element })))
+			if (cast.length > 5) {
+				if (!(await ActorModel.findOne({ name: cast })))
 					return res.status(400).json({
-						message: `The actor ${element} does not exist`,
+						message: `The actor ${cast} does not exist`,
 					});
+			} else {
+				for (const element of cast) {
+					if (!(await ActorModel.findOne({ name: element })))
+						return res.status(400).json({
+							message: `The actor ${element} does not exist`,
+						});
+				}
 			}
 
 			const newMovie = await MovieModel.create({
@@ -109,21 +116,36 @@ MovieRouter.post(
 						// $addToSet: { movies: { movie: newMovie._id } },
 					}
 				);
+				console.log(cast);
 
-				for (let element of cast) {
-					console.log(element);
+				if (cast.length > 5) {
 					let actorObj = await ActorModel.findOneAndUpdate(
-						{ name: element },
+						{ name: cast },
 						{
 							$addToSet: { movies: newMovie._id },
 							// $addToSet: { movies: { movie: newMovie._id } },
 						}
 					);
-					console.log(actorObj);
 					await MovieModel.findByIdAndUpdate(newMovie._id, {
 						$addToSet: { cast: actorObj._id },
 						// $addToSet: { cast: { actor: actorObj._id } },
 					});
+				} else {
+					for (let element of cast) {
+						// console.log('element' + element);
+						let actorObj = await ActorModel.findOneAndUpdate(
+							{ name: element },
+							{
+								$addToSet: { movies: newMovie._id },
+								// $addToSet: { movies: { movie: newMovie._id } },
+							}
+						);
+						console.log(actorObj);
+						await MovieModel.findByIdAndUpdate(newMovie._id, {
+							$addToSet: { cast: actorObj._id },
+							// $addToSet: { cast: { actor: actorObj._id } },
+						});
+					}
 				}
 
 				return res.redirect('/api/admin/movie/show/' + newMovie._id);

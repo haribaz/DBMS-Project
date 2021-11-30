@@ -134,13 +134,6 @@ ActorRouter.get('/show/:id', async (req, res) => {
 			});
 		}
 
-		let x;
-
-		if (!actor.movies) {
-			x = actor.movies;
-			x.sort((a, b) => (a.avgRating.value < b.avgRating.value ? 1 : -1));
-		}
-
 		const data = {
 			id: actor._id,
 			name: actor.name,
@@ -148,7 +141,6 @@ ActorRouter.get('/show/:id', async (req, res) => {
 			age: actor.age,
 			coverImage: actor.coverImage,
 			movies: actor.movies,
-			bestMovie: x[0],
 		};
 		res.render('admin/showActor', {
 			layout: 'layouts/admin',
@@ -183,9 +175,34 @@ ActorRouter.get('/all', async (req, res) => {
 			});
 		}
 
+		const actors = [];
+		let best;
+
+		for (const actor of actorObjects) {
+			let x;
+			if (actor.movies && actor.movies.length != 0) {
+				x = actor.movies;
+				x.sort((a, b) =>
+					a.avgRating.value < b.avgRating.value ? 1 : -1
+				);
+				best = x[0].title;
+			} else {
+				best = ' - ';
+			}
+			const data = {
+				id: actor._id,
+				name: actor.name,
+				bio: actor.bio,
+				age: actor.age,
+				coverImage: actor.coverImage,
+				movies: actor.movies,
+				bestMovie: best,
+			};
+			actors.push(data);
+		}
 		return res.render('admin/actor', {
 			layout: 'layouts/admin',
-			details: actorObjects,
+			details: actors,
 		});
 	} catch (err) {
 		console.log(err.message);

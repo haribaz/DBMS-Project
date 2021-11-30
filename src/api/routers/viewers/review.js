@@ -4,7 +4,7 @@ const UserModel = require('../../../database/models/user');
 ReviewRouter.get('/all', async (req, res) => {
 	//const {id} = req.jwt_payload;
 	try {
-		const { id } = req.body;
+		const { id } = req.jwt_payload;
 		const userObj = await UserModel.findById(id);
 		if (!userObj) {
 			return res.status(400).json({

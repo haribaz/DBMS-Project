@@ -7,6 +7,7 @@
 @import './shared/adminShowMovie.css';
 @import './shared/userFollow.css';
 @import './shared/genreAccordion.css';
+@import './shared/topMovie.css';
 
 *,
 *::before,

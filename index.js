@@ -128,6 +128,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: false }));
 // app.get('/admin/showActor', (req, res) => {
 // 	res.render('admin/showActor', { layout: 'layouts/admin' });
 // });
+
 app.use('/api', apiRouter);
 app.use('/auth', authRouter);
 
@@ -210,6 +211,10 @@ app.use('/auth', authRouter);
 // });
 // app.get('/admin/showActor', (req, res) => {
 // 	res.render('admin/showActor', { layout: 'layouts/admin' });
+// });
+
+// app.get('/user/movie/top', (req, res) => {
+// 	res.render('users/topMovie', { layout: 'layouts/user' });
 // });
 
 app.listen(process.env.PORT || 3000);

@@ -33,7 +33,18 @@ DirectorRouter.get('/name/:name', async (req, res) => {
 
 DirectorRouter.get('/all', async (req, res) => {
 	try {
-		const directorObjects = await DirectorModel.find();
+		const name = req.query.title;
+
+		let directorObjects;
+		if (name) {
+			directorObjects = await DirectorModel.find({
+				name: {
+					$regex: new RegExp(name, 'i'),
+				},
+			});
+		} else {
+			directorObjects = await DirectorModel.find();
+		}
 
 		if (!directorObjects) {
 			return res.status(403).json({

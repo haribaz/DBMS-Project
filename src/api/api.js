@@ -15,6 +15,8 @@ const userGenreRouter = require('./routers/viewers/genre');
 const userReviewRouter = require('./routers/viewers/review');
 const userFollowingRouter = require('./routers/viewers/following');
 
+const imageRouter = require('./routers/image');
+
 const { verifyUserJWT, verifyAdminJWT } = require('../middleware/jwt');
 
 api.use('/admin', verifyAdminJWT);
@@ -33,6 +35,8 @@ api.use('/user/follow', userFollowsRouter);
 api.use('/user/following', userFollowingRouter);
 api.use('/user/genre', userGenreRouter);
 api.use('/user/review', userReviewRouter);
+
+api.use('/image', imageRouter);
 
 //add routers here
 

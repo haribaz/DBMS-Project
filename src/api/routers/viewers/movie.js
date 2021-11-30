@@ -129,8 +129,7 @@ MovieRouter.get('/home', async (req, res) => {
 					{ _id: ele },
 					{ _id: 0, movies: 1 }
 				);
-				// console.log('itr');
-				// console.log(actorObj);
+
 				if (actorObj && actorObj.length != 0) {
 					actors.push(actorObj);
 				}
@@ -154,15 +153,12 @@ MovieRouter.get('/home', async (req, res) => {
 					dirs.push(dirObj);
 				}
 			}
-			// if (dirs && dirs.length !== 0) {
-			// 	console.log(dirs);
+
 			for (let ele of dirs) {
-				console.log(ele);
 				for (let mov of ele.movies) {
 					moviesByDirectors.push(mov);
 				}
 			}
-			// }
 		}
 
 		if (follGenres) {
@@ -180,7 +176,6 @@ MovieRouter.get('/home', async (req, res) => {
 			// if (genres && genres.length !== 0) {
 			// 	console.log('genre');
 			for (let ele of genres) {
-				console.log(mov);
 				for (let mov of ele.movies) {
 					moviesByGenres.push(mov);
 				}

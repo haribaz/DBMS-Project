@@ -46,10 +46,6 @@
        <h2>Cast</h2>
        <div class="carousel-movie">
           <div id="carouselCast" class="carousel slide mt-4" data-bs-ride="carousel">
-             <div class="carousel-indicators">
-               <button type="button" data-bs-target="#carouselCast" data-bs-slide-to="0" class="active"></button>
-               <button type="button" data-bs-target="#carouselCast" data-bs-slide-to="1"></button>
-             </div>
              <div class="carousel-inner">
               <% for (let i = 0; i < details.cast.length; i++) { %>
                 <div class="carousel-item <% if (i === 0) { %> active <% } %>">
@@ -70,7 +66,7 @@
     </div>
     <div>
        <h2>Director</h2>
-       <a href="/api/admin/director/<%= details.director.id %>"><img class="mt-4 movie-cover" src="/api/images/<%= details.director.coverImage %>"></a>
+       <a href="/api/user/director/show/<%= details.director.id %>"><img class="mt-4 movie-cover" src="/api/images/<%= details.director.coverImage %>"></a>
     </div>
  </div>
  <hr class="mt-5 mb-5">
